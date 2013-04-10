@@ -30,7 +30,7 @@ exec=eudora
 sysprefix=/opt
 
 # install prefix for user install
-userprefix=${WINEBOTTLEHOME:-$HOME/.local/share/wineprefixes}
+userprefix=${XDG_DATA_HOME:-"$HOME"/.local}
 
 # install type: 1 for system-wide, 0 for user
 system=0
@@ -58,7 +58,7 @@ quit()	{ message "Goodbye!" ; exit; }
 
 usage() {
 	cat <<- USAGE
-	Usage: $myname [options] [[--tarball] FILE]
+	Usage: $myname [options] [[--installer] FILE]
 	USAGE
 	if [[ "$1" ]] ; then
 		cat >&2 <<- USAGE
@@ -123,8 +123,8 @@ while (( $# )); do
 	--uninstall   ) uninstall=1          ;;
 	--            ) shift ; tarball="$1"
 	                break                ;;
-	*             ) invalid "$1" ; shift
-	                break                ;;
+	-*            ) invalid "$1"; break  ;;
+	*             ) tarball="$1"         ;;
 	esac
 	shift
 done
@@ -148,7 +148,7 @@ fi
 
 ((verbose)) && v=v
 
-dir=${prefix}/${exec}
+dir=${prefix}/share/wineprefixes/${exec}
 config=.config/${exec}
 deskdir=${dir}/linux
 deskfile=${deskdir}/${exec}.desktop
