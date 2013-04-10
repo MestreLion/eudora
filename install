@@ -229,12 +229,10 @@ execfile=${deskdir}/${exec}
 
 	select tarball in "${options[@]}"; do
 		if   ((REPLY==${#options[@]}-1)); then
-			tmpdir="$(mktemp -d)" || fatal "could not create temp dir"
-			trap "rm -rf '$tmpdir'" EXIT
-			wget --directory-prefix="$tmpdir" "$urlauto"
-			tarball="$tmpdir/${urlauto##*/}"
+			# Auto download
 			break
 		elif ((REPLY==${#options[@]})); then
+			# Manual download
 			message "Opening your web browser..." ;
 			message "Choose your ${name} install, download and save to"
 			message "$mydir"
@@ -242,8 +240,10 @@ execfile=${deskdir}/${exec}
 			xdg-open "$urlmanual"
 			quit
 		elif ((REPLY==0)); then
+			# Exit
 			quit
 		elif [[ -f "$tarball" ]]; then
+			# Selected installer
 			tarball="${mydir}/${tarball}"
 			break
 		fi
@@ -258,7 +258,7 @@ execfile=${deskdir}/${exec}
 	echo "App name     = $name"
 	echo "Executable   = $exec"
 	echo "Install dir  = $dir"
-	echo "Installer    = $tarball"
+	echo "Installer    = ${tarball:-$urlauto}"
 	echo "To change these options, see $myname --help"
 	read -r -p "Confirm? (YES,no): " confirm
 	case "$confirm" in
@@ -287,6 +287,12 @@ fi
 
 $sudo mkdir -p${v} "$deskdir" ||
 	fatal "could not create install dir $deskdir"
+
+if [[ -z "$tarball" ]]; then
+	message "downloading installer to $deskdir"
+	wget --directory-prefix="$deskdir" "$urlauto"
+	tarball="$deskdir/${urlauto##*/}"
+fi
 
 message "executing installer"
 $sudo env WINEPREFIX="$dir" wine "$tarball" ||
