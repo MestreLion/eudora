@@ -280,10 +280,13 @@ execfile=${deskdir}/${exec}
 # ---------------------------------------------
 # Now the fun begins
 
+exec 3> /dev/null # to avoid harcoding /dev/null everywhere. For wine stderr.
+
 # wine bottle
-if ! ((system)) && type wine-create >/dev/null 2>&1; then
-	wine-create "$exec"
-fi
+message "creating wine prefix $dir"
+mkdir -p${v} "$(dirname "$dir")"
+env WINEARCH=win32 WINEPREFIX="$dir" wine wineboot 2>&3
+until [[ -f "$dir/system.reg" ]] ; do : ; done ; sleep 5
 
 $sudo mkdir -p${v} "$deskdir" ||
 	fatal "could not create install dir $deskdir"
