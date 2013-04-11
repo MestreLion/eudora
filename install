@@ -37,7 +37,7 @@ urlauto=http://www.eudora.com/download/eudora/windows/7.1/Eudora_7.1.0.9.exe
 drives=()
 
 # leave these ones alone
-logout=0 # may be set to 1 if some install actions require logout
+logout=1  # install changes this to 0 if exec dir is already in PATH
 verbose=1
 uninstall=0
 
@@ -134,6 +134,7 @@ done
 
 [[ "$name" ]] || missing "name"
 [[ "$exec" ]] || missing "exec"
+[[ "$tarball" && ! -f "$tarball" ]] && invalid "installer '$tarball' was not found"
 
 
 for drive in "${drives[@]}"; do
@@ -213,14 +214,14 @@ execdir=${prefix}/bin
 
 ((verbose)) && printf "\n${name^^} INSTALLER\n\n"
 
-[[ "$tarball" ]] || {
+if [[ -z "$tarball" ]]; then
 
 	cd "$mydir"
 	shopt -s nullglob
 	options=( *.exe "Auto-download" "Manual download at $urlmanual" )
 	shopt -u nullglob
 
-	message "Available installers:"
+	echo "Available installers:"
 	PS3="Choose an install (0 to quit): "
 
 	select tarball in "${options[@]}"; do
@@ -246,9 +247,9 @@ execdir=${prefix}/bin
 	done
 	echo ""
 	cd - >/dev/null
-}
+fi
 
-((verbose)) && {
+if ((verbose)); then
 	echo "Install details:"
 	echo "App name     = $name"
 	echo "Executable   = $exec"
@@ -261,9 +262,9 @@ execdir=${prefix}/bin
 	[Nn]*) quit
 	esac
 	echo ""
-}
+fi
 
-[[ -e "$dir" ]] && {
+if [[ -e "$dir" ]]; then
 	msg="Install directory $dir already exists. Delete it before proceding?"
 	read -r -p "$msg (yes,NO): " confirm
 	case "$confirm" in
@@ -271,7 +272,7 @@ execdir=${prefix}/bin
 	       rm -rf "$dir" || fatal "could not remove $dir" ;;
 	    *) quit
 	esac
-}
+fi
 
 # ---------------------------------------------
 # Now the fun begins
@@ -281,7 +282,8 @@ exec 3> /dev/null # to avoid harcoding /dev/null everywhere. For wine stderr.
 # wine bottle
 message "creating wine prefix $dir"
 mkdir -p${v} "$(dirname "$dir")"
-env WINEARCH=win32 WINEPREFIX="$dir" wine wineboot 2>&3
+env WINEARCH=win32 WINEPREFIX="$dir" wine wineboot 2>&3 ||
+	fatal "could not create wine prefix"
 until [[ -f "$dir/system.reg" ]] ; do : ; done ; sleep 5
 
 # wine drives
@@ -303,18 +305,22 @@ if [[ -z "$tarball" ]]; then
 fi
 
 message "executing installer"
-env WINEPREFIX="$dir" wine "$tarball" ||
+env WINEPREFIX="$dir" wine "$tarball" 2>&3 ||
 	fatal "could not execute installer"
+grep -q 'Qualcomm\\\\Eudora' "$dir/system.reg" || { rm -rf "$dir" ; quit ; }
 
 message "creating executable $execfile"
-cp "$mydir/eudora.sh" "$execfile" ||
+cp -f${v} "$mydir/eudora.sh" "$execfile" ||
 	fatal "could not create $execfile executable"
+
 message "symlinking executable to $execdir/$exec"
-mkdir -p${v} "$execdir"
-ln -s "$execfile" "$execdir/$exec"
+mkdir -p${v} "$execdir" &&
+rm -f${v} "$execdir/$exec" &&
+ln -s "$execfile" "$execdir/$exec" ||
+	fatal "could not create symlink $execfile"
 
 message "installing icons"
-cp "$mydir"/*.png "$deskdir"
+cp -f${v} "$mydir"/*.png "$deskdir"
 for icon in "$deskdir"/*.png ; do
 	size=${icon##*-}
 	size=${size%%.*}
@@ -358,7 +364,7 @@ xdg-desktop-menu install --novendor "$deskfile" ||
 	fatal "could not install desktop file"
 
 message "copying install and uninstall scripts to $dir/bin"
-cp "$mydir/$myname" "$deskdir/install"
+cp -f${v} "$mydir/$myname" "$deskdir/install"
 awk -v exec="$exec" -v prefix="$prefix" -v name="$name" \
     '/^uninstall=/{sub("=.*","=1")}
      /^exec=/     {sub("=.*","=" exec)}
@@ -366,18 +372,17 @@ awk -v exec="$exec" -v prefix="$prefix" -v name="$name" \
      /^prefix=/   {sub("=.*","=" prefix)}
      1' "$mydir/$myname" > "$deskdir/uninstall"
 
-chmod +x "$deskdir"/{un,}install ||
+message "setting permissions"
+chmod +x "$execfile" "$deskdir"/{un,}install ||
 	fatal "could not set permissions in $deskdir"
 
-addpath=1
-SAVED_IFS=$IFS
+ifs=$IFS
 IFS=:
 for pathdir in $PATH ; do
-	[[ "$pathdir" == "$execdir" ]] && { addpath=0 ; break ; }
+	[[ "$pathdir" == "$execdir" ]] && { logout=0 ; break ; }
 done
-
-((addpath)) && {
-	logout=1
+IFS=$ifs
+if ((logout)); then
 	relexecdir=${execdir#$HOME/}
 	message "adding ~/${relexecdir} to you \$PATH in ~/.profile"
 	cat >> "$HOME/.profile" <<-EOF
@@ -388,9 +393,7 @@ done
 	    PATH="\$HOME/$relexecdir:\$PATH"
 	fi
 	EOF
-}
-IFS=$SAVED_IFS
+fi
 
-message ""
 message "Succesfully installed ${name}!"
 ((logout)) && echo "Log out for changes to apply..."
