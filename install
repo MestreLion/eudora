@@ -301,7 +301,11 @@ done
 mkdir -p${v} "$deskdir" ||
 	fatal "could not create install dir $deskdir"
 
-if [[ -z "$tarball" ]]; then
+if [[ "$tarball" ]]; then
+	message "copying installer to $deskdir"
+	cp -f${v} "$tarball" "$deskdir"
+	tarball="$deskdir/${tarball##*/}"
+else
 	message "downloading installer to $deskdir"
 	wget --directory-prefix="$deskdir" "$urlauto"
 	tarball="$deskdir/${urlauto##*/}"
