@@ -39,6 +39,9 @@ system=0
 urlmanual=http://www.eudora.com/download/
 urlauto=http://www.eudora.com/download/eudora/windows/7.1/Eudora_7.1.0.9.exe
 
+# drive letters to add
+drives=()
+
 # leave these ones alone
 logout=0 # may be set to 1 if some install actions require logout
 verbose=1
@@ -91,6 +94,16 @@ Options:
 --name=NAME
 	friendly application name, for menu entries. Default "$name"
 
+--drive=X:PATH
+	adds a new drive in wine, mapping the directory PATH to the wine drive
+	letter X:. Can be used multiple times. Allowed X ranges from D to X
+	(A,B,C,Z are somewhat reserved in Wine). Letters like D (and perhaps E)
+	will overwrite pre-configured optical drives (CD/DVD), so re-add them
+	assigning a different letter if you want. Relative PATHs are allowed,
+	and will be relative to PREFIX/dosdevices. Examples:
+	--drive=D:/mnt/data --drive=E:/media/cdrom --drive=F:/dev/sr0
+	--drive=G:../../../../../Desktop/mydir
+
 --installer FILE
 	the .exe install file downloaded from ${name}'s website.
 	If none is provided, a menu will show currently downloaded files.
@@ -114,14 +127,16 @@ while (( $# )); do
 	--exec=*      ) exec="${1#*=}"       ;;
 	--prefix=*    ) prefix="${1#*=}"     ;;
 	--installer=* ) tarball="${1#*=}"    ;;
-	--name        ) shift ; name="$1"    ;;
-	--exec        ) shift ; exec="$1"    ;;
-	--prefix      ) shift ; prefix="$1"  ;;
-	--installer   ) shift ; tarball="$1" ;;
+	--drive=*     ) drives+=("${1#*=}")  ;;
+	--name        ) shift; name="$1"     ;;
+	--exec        ) shift; exec="$1"     ;;
+	--prefix      ) shift; prefix="$1"   ;;
+	--installer   ) shift; tarball="$1"  ;;
+	--drive       ) shift; drives+=("$1");;
 	--system      ) system=1             ;;
 	--user        ) system=0             ;;
 	--uninstall   ) uninstall=1          ;;
-	--            ) shift ; tarball="$1"
+	--            ) shift; tarball="$1"
 	                break                ;;
 	-*            ) invalid "$1"; break  ;;
 	*             ) tarball="$1"         ;;
@@ -131,6 +146,13 @@ done
 
 [[ "$name" ]] || missing "name"
 [[ "$exec" ]] || missing "exec"
+
+
+for drive in "${drives[@]}"; do
+	IFS=: read drive_letter drive_path <<< "$drive"
+	[[ "${drive_letter,,}" =~ ^[d-x]$ && "$drive_path" ]] ||
+		invalid "'$drive' is not a valid drive syntax. Use 'X:/path/to/x', drive from D to X"
+done
 
 if (( system )) ; then
 	[[ "$prefix" ]] || prefix=$sysprefix
@@ -259,6 +281,7 @@ execfile=${deskdir}/${exec}
 	echo "Executable   = $exec"
 	echo "Install dir  = $dir"
 	echo "Installer    = ${tarball:-$urlauto}"
+	echo "Wine Drives  = ${drives[@]}"
 	echo "To change these options, see $myname --help"
 	read -r -p "Confirm? (YES,no): " confirm
 	case "$confirm" in
@@ -287,6 +310,15 @@ message "creating wine prefix $dir"
 mkdir -p${v} "$(dirname "$dir")"
 env WINEARCH=win32 WINEPREFIX="$dir" wine wineboot 2>&3
 until [[ -f "$dir/system.reg" ]] ; do : ; done ; sleep 5
+
+# wine drives
+for drive in "${drives[@]}"; do
+	message "configuring wine drive ${drive_letter^^}: to $drive_path"
+	IFS=: read drive_letter drive_path <<< "$drive"
+	drive_block=$([[ -b "$drive_path" ]] && echo ":")
+	rm -f "$dir/dosdevices/${drive_letter,,}:"*
+	ln -s "$drive_path" "$dir/dosdevices/${drive_letter,,}:$drive_block"
+done
 
 $sudo mkdir -p${v} "$deskdir" ||
 	fatal "could not create install dir $deskdir"
