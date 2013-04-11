@@ -26,14 +26,8 @@ name="Eudora Mail"
 # executable (also affects dir, icon and .desktop file names)
 exec=eudora
 
-# install prefix for system-wide install
-sysprefix=/opt
-
-# install prefix for user install
-userprefix=${XDG_DATA_HOME:-"$HOME"/.local}
-
-# install type: 1 for system-wide, 0 for user
-system=0
+# install prefix
+prefix=${XDG_DATA_HOME:-"$HOME"/.local}
 
 # download URL
 urlmanual=http://www.eudora.com/download/
@@ -79,17 +73,13 @@ Options:
 -h|--help  - show this page.
 -q|--quiet - supress informative messages.
 
---system
---user
-	choose system-wide or per-user install. Default is user
-
 --exec=NAME
 	executable name, also used as a prefix for for naming the
 	install directory, icon and .desktop files. Default "$exec"
 
 --prefix=DIR
 	parent of the install directory. Default is
-	"$userprefix"
+	"$prefix"
 
 --name=NAME
 	friendly application name, for menu entries. Default "$name"
@@ -109,7 +99,7 @@ Options:
 	If none is provided, a menu will show currently downloaded files.
 
 --uninstall
-	Uninstall ${name}. Combine with --system, --exec and --prefix to
+	Uninstall ${name}. Combine with --exec and --prefix to
 	uninstall from a custom install
 
 Copyright (C) 2012 Rodrigo Silva (MestreLion) <linux@rodrigosilva.com>
@@ -133,8 +123,6 @@ while (( $# )); do
 	--prefix      ) shift; prefix="$1"   ;;
 	--installer   ) shift; tarball="$1"  ;;
 	--drive       ) shift; drives+=("$1");;
-	--system      ) system=1             ;;
-	--user        ) system=0             ;;
 	--uninstall   ) uninstall=1          ;;
 	--            ) shift; tarball="$1"
 	                break                ;;
@@ -154,20 +142,6 @@ for drive in "${drives[@]}"; do
 		invalid "'$drive' is not a valid drive syntax. Use 'X:/path/to/x', drive from D to X"
 done
 
-if (( system )) ; then
-	[[ "$prefix" ]] || prefix=$sysprefix
-	execdir=/usr/local/bin
-	appdir=/usr/local/share/applications
-	sudo=sudo
-	label="system"
-else
-	[[ "$prefix" ]] || prefix=$userprefix
-	execdir=$HOME/.local/bin
-	appdir=$HOME/.local/share/applications
-	sudo=env
-	label="user"
-fi
-
 ((verbose)) && v=v
 
 dir=${prefix}/share/wineprefixes/${exec}
@@ -175,6 +149,7 @@ config=.config/${exec}
 deskdir=${dir}/linux
 deskfile=${deskdir}/${exec}.desktop
 execfile=${deskdir}/${exec}
+execdir=${prefix}/bin
 
 # Uninstall  ---------------------------------------------
 
@@ -185,23 +160,22 @@ execfile=${deskdir}/${exec}
 	case "$confirm" in
 	[Yy]*)
 		message "removing desktop file"
-		$sudo rm -rf "$appdir/$exec.desktop"
-		$sudo update-desktop-database "$appdir"
+		xdg-desktop-menu uninstall --novendor "${exec}.desktop"
 
 		message "removing icons"
 		for icon in "$dir"/bin/*.png ; do
 			size=${icon##*-}
 			size=${size%%.*}
-			$sudo xdg-icon-resource uninstall --noupdate \
+			xdg-icon-resource uninstall --noupdate \
 				--size "$size" "$exec" 2>/dev/null
 		done
-		$sudo xdg-icon-resource forceupdate
+		xdg-icon-resource forceupdate
 
 		message "removing executable"
-		$sudo rm -rf "$execdir/$exec"
+		rm -rf "$execdir/$exec"
 
 		message "removing install dir"
-		$sudo rm -rf "$dir"
+		rm -rf "$dir"
 
 		[[ -d "$HOME/$config" ]] && {
 			msg="Remove personal settings in $HOME/$config ?"
@@ -276,7 +250,6 @@ execfile=${deskdir}/${exec}
 
 ((verbose)) && {
 	echo "Install details:"
-	echo "Install Type = $label"
 	echo "App name     = $name"
 	echo "Executable   = $exec"
 	echo "Install dir  = $dir"
@@ -295,7 +268,7 @@ execfile=${deskdir}/${exec}
 	read -r -p "$msg (yes,NO): " confirm
 	case "$confirm" in
 	[Yy]*) message "removing $dir" ;
-	       $sudo rm -rf "$dir" || fatal "could not remove $dir" ;;
+	       rm -rf "$dir" || fatal "could not remove $dir" ;;
 	    *) quit
 	esac
 }
@@ -320,7 +293,7 @@ for drive in "${drives[@]}"; do
 	ln -s "$drive_path" "$dir/dosdevices/${drive_letter,,}:$drive_block"
 done
 
-$sudo mkdir -p${v} "$deskdir" ||
+mkdir -p${v} "$deskdir" ||
 	fatal "could not create install dir $deskdir"
 
 if [[ -z "$tarball" ]]; then
@@ -330,29 +303,28 @@ if [[ -z "$tarball" ]]; then
 fi
 
 message "executing installer"
-$sudo env WINEPREFIX="$dir" wine "$tarball" ||
+env WINEPREFIX="$dir" wine "$tarball" ||
 	fatal "could not execute installer"
 
 message "creating executable $execfile"
-$sudo cp "$mydir/eudora.sh" "$execfile" ||
+cp "$mydir/eudora.sh" "$execfile" ||
 	fatal "could not create $execfile executable"
 message "symlinking executable to $execdir/$exec"
-$sudo mkdir -p${v} "$execdir"
-$sudo ln -s "$execfile" "$execdir/$exec"
+mkdir -p${v} "$execdir"
+ln -s "$execfile" "$execdir/$exec"
 
 message "installing icons"
-$sudo cp "$mydir"/*.png "$deskdir"
+cp "$mydir"/*.png "$deskdir"
 for icon in "$deskdir"/*.png ; do
 	size=${icon##*-}
 	size=${size%%.*}
-	$sudo xdg-icon-resource install --noupdate --novendor --size "$size" \
+	xdg-icon-resource install --noupdate --novendor --size "$size" \
 		"$icon" "$exec"
 done
-$sudo xdg-icon-resource forceupdate || fatal "could not install icons"
+xdg-icon-resource forceupdate || fatal "could not install icons"
 
 message "installing desktop file"
-{ $sudo dd of="$deskfile" status=noxfer 2>/dev/null ||
-  fatal "could not create desktop entry $deskfile" ; } <<-DESKTOP
+cat > "$deskfile" <<-DESKTOP
 	[Desktop Entry]
 	Version=1.0
 	Type=Application
@@ -386,41 +358,34 @@ xdg-desktop-menu install --novendor "$deskfile" ||
 	fatal "could not install desktop file"
 
 message "copying install and uninstall scripts to $dir/bin"
-$sudo cp "$mydir/$myname" "$deskdir"
-$sudo cp "$mydir/$myname" "$deskdir/uninstall"
-$sudo sed -i "/^uninstall=/s/0/1/;/^system=/s/[01]/$system/" "$deskdir/uninstall"
+cp "$mydir/$myname" "$deskdir"
+cp "$mydir/$myname" "$deskdir/uninstall"
+sed -i "/^uninstall=/s/0/1/;/^system=/s/[01]/$system/" "$deskdir/uninstall"
 
-message "adjusting ownership and permitions in $dir"
-((system)) && {
-	sudo chown -R root: "$dir" ||
-		fatal "could not set owner of $dir to root"
-}
-$sudo chmod +x "$deskdir"/* ||
+chmod +x "$deskdir"/* ||
 	fatal "could not set permitions in $deskdir"
 
-((system)) || {
-	addpath=1
-	SAVED_IFS=$IFS
-	IFS=:
-	for pathdir in $PATH ; do
-		[[ "$pathdir" == "$execdir" ]] && { addpath=0 ; break ; }
-	done
+addpath=1
+SAVED_IFS=$IFS
+IFS=:
+for pathdir in $PATH ; do
+	[[ "$pathdir" == "$execdir" ]] && { addpath=0 ; break ; }
+done
 
-	((addpath)) && {
-		logout=1
-		relexecdir=${execdir#$HOME/}
-		message "adding ~/${relexecdir} to you \$PATH in ~/.profile"
-		cat >> "$HOME/.profile" <<-EOF
+((addpath)) && {
+	logout=1
+	relexecdir=${execdir#$HOME/}
+	message "adding ~/${relexecdir} to you \$PATH in ~/.profile"
+	cat >> "$HOME/.profile" <<-EOF
 
-		# Included by $name $label install
-		# set PATH so it includes user's ~/${relexecdir} if it exists
-		if [ -d "\$HOME/$relexecdir" ] ; then
-		    PATH="\$HOME/$relexecdir:\$PATH"
-		fi
-		EOF
-	}
-	IFS=$SAVED_IFS
+	# Included by $name $label install
+	# set PATH so it includes user's ~/${relexecdir} if it exists
+	if [ -d "\$HOME/$relexecdir" ] ; then
+	    PATH="\$HOME/$relexecdir:\$PATH"
+	fi
+	EOF
 }
+IFS=$SAVED_IFS
 
 message ""
 message "Succesfully installed ${name}!"
