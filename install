@@ -358,12 +358,16 @@ xdg-desktop-menu install --novendor "$deskfile" ||
 	fatal "could not install desktop file"
 
 message "copying install and uninstall scripts to $dir/bin"
-cp "$mydir/$myname" "$deskdir"
-cp "$mydir/$myname" "$deskdir/uninstall"
-sed -i "/^uninstall=/s/0/1/;/^system=/s/[01]/$system/" "$deskdir/uninstall"
+cp "$mydir/$myname" "$deskdir/install"
+awk -v exec="$exec" -v prefix="$prefix" -v name="$name" \
+    '/^uninstall=/{sub("=.*","=1")}
+     /^exec=/     {sub("=.*","=" exec)}
+     /^name=/     {sub("=.*","=" name)}
+     /^prefix=/   {sub("=.*","=" prefix)}
+     1' "$mydir/$myname" > "$deskdir/uninstall"
 
-chmod +x "$deskdir"/* ||
-	fatal "could not set permitions in $deskdir"
+chmod +x "$deskdir"/{un,}install ||
+	fatal "could not set permissions in $deskdir"
 
 addpath=1
 SAVED_IFS=$IFS
