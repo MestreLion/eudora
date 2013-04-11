@@ -46,12 +46,15 @@ uninstall=0
 
 myname="${0##*/}"
 mydir=$(dirname "$(readlink -f "$0")")
+greenC=$(tput setaf 2)
+redC=$(tput setaf 1; tput bold)
+endC=$(tput sgr0)
 
-fatal()   { [[ "$1" ]] && echo "$myname: error: $1" >&2 ; exit ${2:-1} ; }
+fatal()   { [[ "$1" ]] && echo "${redC}$myname: error: $1${endC}" >&2; exit ${2:-1}; }
 invalid() { echo "$myname: invalid option: $1" >&2 ; usage 1 ; }
 missing() { echo "$myname: missing ${1:+$1 }operand" >&2 ; usage 1 ; }
-message() { ((verbose)) && echo "$1" ; }
-quit()	{ message "Goodbye!" ; exit; }
+message() { ((verbose)) && echo "${greenC}* ${1}${endC}" ; }
+quit()    { ((verbose)) && echo "Goodbye!" ; exit; }
 
 usage() {
 	cat <<- USAGE
