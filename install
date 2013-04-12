@@ -303,7 +303,8 @@ message "creating wine prefix $dir"
 mkdir -p${v} "$(dirname "$dir")"
 env WINEARCH=win32 WINEPREFIX="$dir" wine wineboot 2>&3 ||
 	fatal "could not create wine prefix"
-until [[ -f "$dir/system.reg" ]] ; do : ; done ; sleep 5
+until [[ -f "$dir/system.reg" ]] ; do : ; done ; sleep 1
+
 
 # wine drives
 for drive in "${drives[@]}"; do
@@ -332,7 +333,12 @@ fi
 message "executing installer"
 env WINEPREFIX="$dir" wine "$tarball" 2>&3 ||
 	fatal "could not execute installer"
-grep -q 'Qualcomm\\\\Eudora' "$dir/system.reg" || { rm -rf "$dir" ; quit ; }
+
+# Check if completed or canceled by user
+[[ "$(find "$dir/drive_c" -name 'Eudora.exe')" ]] ||
+{ message "please wait..."; sleep 5;
+  grep -q 'Qualcomm\\\\Eudora' "$dir/system.reg"; } ||
+{ rm -rf "$dir" ; quit ; }
 
 
 # launcher
