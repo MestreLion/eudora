@@ -167,12 +167,14 @@ execdir=${prefix}/bin
 		xdg-desktop-menu uninstall --novendor "${exec}.desktop"
 
 		message "removing icons"
-		for icon in "$deskdir"/*.png ; do
+		shopt -s nullglob
+		for icon in "$deskdir"/*.{png,svg,xpm} ; do
 			size=${icon##*-}
 			size=${size%%.*}
 			xdg-icon-resource uninstall --noupdate \
 				--size "$size" "$exec" 2>/dev/null
 		done
+		shopt -u nullglob
 		xdg-icon-resource forceupdate
 
 		message "removing executable"
@@ -197,6 +199,33 @@ execdir=${prefix}/bin
 	esac
 
 	exit
+}
+
+# ---------------------------------------------------------------
+# Helper functions
+
+icon_size()
+{
+	local icon=$1
+	local title=${icon%.*}
+	local ext=${icon#"$title"}
+	local size=${title##*-}
+
+	# size in filename
+	if   [[ "$size" =~ ^[0-9]+$ ]]; then
+		echo "$size"
+
+	# auto-detect by imagemagick
+	elif type identify >/dev/null 2>&1; then
+		identify -format '%w' "$icon"
+
+	# parsed from xpm
+	elif [[ "${ext,,}" = .xpm ]]; then
+		awk 'NR==3{print $2}' "$icon"
+
+	else
+		return 1
+	fi
 }
 
 # ---------------------------------------------------------------
@@ -314,13 +343,16 @@ ln -s "$execfile" "$execdir/$exec" ||
 	fatal "could not create symlink $execfile"
 
 message "installing icons"
-cp -f${v} "$mydir"/*.png "$deskdir"
-for icon in "$deskdir"/*.png ; do
-	size=${icon##*-}
-	size=${size%%.*}
-	xdg-icon-resource install --noupdate --novendor --size "$size" \
-		"$icon" "$exec"
+shopt -s nullglob
+for icon in "$mydir"/icons/*.{[Pp][Nn][Gg],[Ss][Vv][Gg],[Xx][Pp][Mm]} ; do
+	size=$(icon_size "$icon") ||
+		fatal "could not determine size of $icon. Rename it or install ImageMagick"
+	ext=${icon##*.}
+	cp -f${v} "$icon" "${deskdir}/${exec}-${size}.${ext,,}"
+	xdg-icon-resource install --noupdate --novendor \
+		--size "$size" "$icon" "$exec"
 done
+shopt -u nullglob
 xdg-icon-resource forceupdate || fatal "could not install icons"
 
 message "installing desktop file"
