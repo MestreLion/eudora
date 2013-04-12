@@ -346,6 +346,15 @@ env WINEPREFIX="$dir" wine "$tarball" 2>&3 ||
 { rm -rf "$dir" ; quit ; }
 
 
+#wine installer clean-up
+message "cleaning wine auto-generated Eudora cruft"
+find ~/.local/share/icons -iregex '.*/[A-F0-9]+_eudora.*\.[0-9]+\.png$' -delete
+find ~/.local/share/icons -iregex '.*/[A-F0-9]+_qckstart.*\.[0-9]+\.png$' -delete
+rm -rf${v} ~/.local/share/applications/wine/Programs/Eudora
+rm -rf${v} ~/.local/share/desktop-directories/wine-Programs-Eudora.directory
+rm -rf${v} ~/.config/menus/applications-merged/wine-Programs-Eudora-*.menu
+
+
 # launcher
 message "creating launcher $execfile"
 cp -f${v} "$mydir/eudora.sh" "$execfile" ||
