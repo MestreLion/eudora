@@ -159,7 +159,7 @@ execdir=${prefix}/bin
 
 ((uninstall)) && {
 
-	msg="Are you sure you want to remove ${exec} ${label} install?"
+	msg="Are you sure you want to remove ${name} (${exec})?"
 	read -r -p "$msg (yes,NO): " confirm
 	case "$confirm" in
 	[Yy]*)
@@ -167,7 +167,7 @@ execdir=${prefix}/bin
 		xdg-desktop-menu uninstall --novendor "${exec}.desktop"
 
 		message "removing icons"
-		for icon in "$dir"/bin/*.png ; do
+		for icon in "$deskdir"/*.png ; do
 			size=${icon##*-}
 			size=${size%%.*}
 			xdg-icon-resource uninstall --noupdate \
@@ -191,19 +191,6 @@ execdir=${prefix}/bin
 			;;
 			esac
 		}
-
-		# Launcher
-		rm -f "$HOME/bin/eudora"
-
-		# Icons
-		rm -f "$HOME/.local/share/icons/hicolor/16x16/apps/eudora.png"
-		rm -f "$HOME/.local/share/icons/hicolor/32x32/apps/eudora.png"
-		rm -f "$HOME/.local/share/icons/hicolor/48x48/apps/eudora.png"
-
-		# Desktop
-		rm -f "$HOME/.local/share/applications/eudora.desktop"
-
-		find "$HOME"/.local/share -type d -empty -delete
 
 		message "Successfully uninstalled $name"
 	;;
@@ -374,9 +361,9 @@ message "copying install and uninstall scripts to $dir/bin"
 cp -f${v} "$mydir/$myname" "$deskdir/install"
 awk -v exec="$exec" -v prefix="$prefix" -v name="$name" \
     '/^uninstall=/{sub("=.*","=1")}
-     /^exec=/     {sub("=.*","=" exec)}
-     /^name=/     {sub("=.*","=" name)}
-     /^prefix=/   {sub("=.*","=" prefix)}
+     /^exec=/     {sub("=.*","=\"" exec   "\"")}
+     /^name=/     {sub("=.*","=\"" name   "\"")}
+     /^prefix=/   {sub("=.*","=\"" prefix "\"")}
      1' "$mydir/$myname" > "$deskdir/uninstall"
 
 message "setting permissions"
