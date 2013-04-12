@@ -17,6 +17,11 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program. If not see <http://www.gnu.org/licenses/gpl.html>
 
+#TODO: Registry tweaks: date format, font size, default mail (under wine)
+
+#FIXME: Edit eudora.sh post-install, hardcoding correct prefix, exec and data
+# paths, reading from registry
+
 # ---------------------------------------------------------------
 # User-modifiable stuff... most can be changed via command-line options
 
@@ -436,6 +441,7 @@ if ((logout)); then
 	fi
 	EOF
 fi
+
 
 message "Succesfully installed ${name}!"
 ((logout)) && echo "Log out for changes to apply..."
