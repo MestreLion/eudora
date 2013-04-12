@@ -250,7 +250,7 @@ if [[ -z "$tarball" ]]; then
 		elif ((REPLY==${#options[@]})); then
 			# Manual download
 			message "Opening your web browser..." ;
-			message "Choose your ${name} install, download and save to"
+			message "Download the .exe installer, save it in"
 			message "$mydir"
 			message "... and run me again"
 			xdg-open "$urlmanual"
@@ -314,8 +314,10 @@ for drive in "${drives[@]}"; do
 	ln -s "$drive_path" "$dir/dosdevices/${drive_letter,,}:$drive_block"
 done
 
+
+# installer
 mkdir -p${v} "$deskdir" ||
-	fatal "could not create install dir $deskdir"
+	fatal "could not create integration dir $deskdir"
 
 if [[ "$tarball" ]]; then
 	message "copying installer to $deskdir"
@@ -332,16 +334,20 @@ env WINEPREFIX="$dir" wine "$tarball" 2>&3 ||
 	fatal "could not execute installer"
 grep -q 'Qualcomm\\\\Eudora' "$dir/system.reg" || { rm -rf "$dir" ; quit ; }
 
-message "creating executable $execfile"
-cp -f${v} "$mydir/eudora.sh" "$execfile" ||
-	fatal "could not create $execfile executable"
 
-message "symlinking executable to $execdir/$exec"
+# launcher
+message "creating launcher $execfile"
+cp -f${v} "$mydir/eudora.sh" "$execfile" ||
+	fatal "could not create $execfile launcher"
+
+message "symlinking launcher to $execdir/$exec"
 mkdir -p${v} "$execdir" &&
 rm -f${v} "$execdir/$exec" &&
 ln -s "$execfile" "$execdir/$exec" ||
 	fatal "could not create symlink $execfile"
 
+
+# icons
 message "installing icons"
 shopt -s nullglob
 for icon in "$mydir"/icons/*.{[Pp][Nn][Gg],[Ss][Vv][Gg],[Xx][Pp][Mm]} ; do
@@ -355,6 +361,8 @@ done
 shopt -u nullglob
 xdg-icon-resource forceupdate || fatal "could not install icons"
 
+
+# desktop file
 message "installing desktop file"
 cat > "$deskfile" <<-DESKTOP
 	[Desktop Entry]
@@ -389,6 +397,8 @@ DESKTOP
 xdg-desktop-menu install --novendor "$deskfile" ||
 	fatal "could not install desktop file"
 
+
+# install, uninstall, perms and PATH
 message "copying install and uninstall scripts to $dir/bin"
 cp -f${v} "$mydir/$myname" "$deskdir/install"
 awk -v exec="$exec" -v prefix="$prefix" -v name="$name" \
@@ -413,7 +423,7 @@ if ((logout)); then
 	message "adding ~/${relexecdir} to you \$PATH in ~/.profile"
 	cat >> "$HOME/.profile" <<-EOF
 
-	# Included by $name $label install
+	# Included by $name
 	# set PATH so it includes user's ~/${relexecdir} if it exists
 	if [ -d "\$HOME/$relexecdir" ] ; then
 	    PATH="\$HOME/$relexecdir:\$PATH"
