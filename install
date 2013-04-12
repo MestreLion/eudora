@@ -34,9 +34,10 @@ exec=eudora
 # install prefix
 prefix=${XDG_DATA_HOME:-"$HOME"/.local}
 
-# download URL
+# download URLs
 urlmanual=http://www.eudora.com/download/
 urlauto=http://www.eudora.com/download/eudora/windows/7.1/Eudora_7.1.0.9.exe
+urlpdf=http://www.eudora.com/download/eudora/windows/7.1/Eudora_71_User_Manual.pdf
 
 # drive letters to add
 drives=()
@@ -168,8 +169,8 @@ execdir=${prefix}/bin
 	read -r -p "$msg (yes,NO): " confirm
 	case "$confirm" in
 	[Yy]*)
-		message "removing desktop file"
-		xdg-desktop-menu uninstall --novendor "${exec}.desktop"
+		message "removing desktop files"
+		xdg-desktop-menu uninstall --novendor "$exec"{,-manual}.desktop
 
 		message "removing icons"
 		shopt -s nullglob
@@ -411,11 +412,29 @@ cat > "$deskfile" <<-DESKTOP
 	Name=Compose New Message
 	Name[pt]=Criar nova mensagem
 	Name[pt_BR]=Criar nova mensagem
-	Exec=eudora "mailto:"
+	Exec=eudora "mailto:?body=%0A"
 	TargetEnvironment=Messaging Menu;Unity;
 DESKTOP
 xdg-desktop-menu install --novendor "$deskfile" ||
 	fatal "could not install desktop file"
+
+
+# manual
+message "downloading and installing manual"
+wget --directory-prefix="$deskdir" "$urlpdf"
+cat > "${deskdir}/${exec}-manual.desktop" <<-MANUAL
+	[Desktop Entry]
+	Version=1.0
+	Type=Application
+	Name=$name User Guide
+	Name[pt]=$name - Guia do Usuário
+	Name[pt_BR]=$name - Guia do Usuário
+	Categories=Application;Network;Email;
+	Terminal=false
+	Icon=application-pdf
+	Exec=xdg-open '${deskdir}/${urlpdf##*/}'
+MANUAL
+xdg-desktop-menu install  --novendor "${deskdir}/${exec}-manual.desktop"
 
 
 # install, uninstall, perms and PATH
