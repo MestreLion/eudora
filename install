@@ -163,12 +163,16 @@ done
 
 ((verbose)) && v=v
 
+xdg_data=${XDG_DATA_HOME:-"$HOME"/.local}
+xdg_config=${XDG_CONFIG_HOME:-"$HOME"/.config}
+
 dir=${prefix}/share/wineprefixes/${exec}
-config=.config/${exec}
+configdir="${xdg_config}/${exec}"
 deskdir=${dir}/linux
 deskfile=${deskdir}/${exec}.desktop
 execfile=${deskdir}/${exec}
 execdir=${prefix}/bin
+
 
 # Uninstall  ---------------------------------------------
 
@@ -198,13 +202,13 @@ execdir=${prefix}/bin
 		message "removing install dir"
 		rm -rf "$dir"
 
-		[[ -d "$HOME/$config" ]] && {
-			msg="Remove personal settings in $HOME/$config ?"
+		[[ -d "$configdir" ]] && {
+			msg="Remove personal settings in $configdir ?"
 			read -r -p "$msg (yes,NO): " confirm
 			case "$confirm" in
 			[Yy]*)
-				message "removing $HOME/$config"
-				rm -rf "$HOME/$config"
+				message "removing $configdir"
+				rm -rf "$configdir"
 			;;
 			esac
 		}
@@ -358,11 +362,11 @@ env WINEPREFIX="$dir" wine "$tarball" 2>&3 ||
 
 #wine installer clean-up
 message "cleaning wine auto-generated Eudora cruft"
-find ~/.local/share/icons -iregex '.*/[A-F0-9]+_eudora.*\.[0-9]+\.png$' -delete
-find ~/.local/share/icons -iregex '.*/[A-F0-9]+_qckstart.*\.[0-9]+\.png$' -delete
-rm -rf${v} ~/.local/share/applications/wine/Programs/Eudora
-rm -rf${v} ~/.local/share/desktop-directories/wine-Programs-Eudora.directory
-rm -rf${v} ~/.config/menus/applications-merged/wine-Programs-Eudora-*.menu
+find "$xdg_data"/share/icons -iregex '.*/[A-F0-9]+_eudora.*\.[0-9]+\.png$' -delete
+find "$xdg_data"/share/icons -iregex '.*/[A-F0-9]+_qckstart.*\.[0-9]+\.png$' -delete
+rm -rf${v} "$xdg_data"/share/applications/wine/Programs/Eudora
+rm -rf${v} "$xdg_data"/share/desktop-directories/wine-Programs-Eudora.directory
+rm -rf${v} "$xdg_config"/menus/applications-merged/wine-Programs-Eudora-*.menu
 
 
 # launcher
