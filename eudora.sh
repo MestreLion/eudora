@@ -17,9 +17,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/gpl>.
 #
-#    IMPORTANT NOTE: The above copyright notice and GPL licence are for this
+#    IMPORTANT NOTE: The above copyright notice and GPL license are for this
 #    launcher and associated native files only! Eudora Mail itself is
-#    propietary software, copyright of Qualcomm Inc. Wine and its tools
+#    proprietary software, copyright of Qualcomm Inc. Wine and its tools
 #    are free software under a different copyright and license. See
 #    <http://www.eudora.com> and <http://www.winehq.org>
 #
@@ -48,7 +48,7 @@ $self { --help | --manual | --version }
 Description
 
 Eudora is a Mail Client for windows. This launcher provides a basic interface
-for native enviroment to use Eudora running under Wine compatability layer.
+for native environment to use Eudora running under Wine compatibility layer.
 
 It is not recommended for the user to directly invoke this eudora launcher
 with arguments. Its main purpose is to be registered in a native desktop
@@ -140,7 +140,7 @@ Generic options:
     Show command synopsis.
 
 --manual
-    Show this manualpage.
+    Show this manual page.
 
 --version
     Show the launcher version information.
@@ -156,8 +156,8 @@ attachments and other (to, cc, bcc, subject, body) fields via command-line.
 
 So, when an "attach" field is present is in the mailto uri, file is tested and,
 if valid, it is passed as command line argument and the mailto uri argument is
-discarted. Any other valid files passed directly in command line also makes
-eudora (this launcher) silently ignore and discart any mailto uri before
+discarded. Any other valid files passed directly in command line also makes
+eudora (this launcher) silently ignore and discard any mailto uri before
 launching Eudora.exe
 
 Valid attachment files are the ones that satisfy ALL following conditions:
@@ -181,8 +181,8 @@ by eudora. Relative paths are accepted and properly translated.
 
 Environment Variables
 
-$self honours the following environment variables, which takes precedence over
-settings in the cofiguration file but may be overriden by respective command
+$self honors the following environment variables, which takes precedence over
+settings in the configuration file but may be overridden by respective command
 line options.
 
 WINEPREFIX
@@ -209,7 +209,7 @@ eudora.log
 eudora.conf
     Default configuration settings, in option=value format. This file will be
     sourced by the launcher, so #comments are allowed but extra caution must be
-    taken with its syntax. These settings may be overriden by environment
+    taken with its syntax. These settings may be overridden by environment
     variable WINEPREFIX or respective command line options.
 
     Allowed options are:
@@ -259,8 +259,8 @@ License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
 
-IMPORTANT NOTE: The above copyright notice and GPL licence are for this launcher
-and associated native files only! Eudora Mail itself is propietary software,
+IMPORTANT NOTE: The above copyright notice and GPL license are for this launcher
+and associated native files only! Eudora Mail itself is proprietary software,
 copyright of Qualcomm Inc. Wine and its tools are free software under different
 copyright and license. See <http://www.eudora.com> and <http://www.winehq.org>
 
@@ -518,7 +518,7 @@ parse_mailto() {
 
 ####################################### Main
 
-exec 3>/dev/null # to avoid harcoding /dev/null everywhere. For tools' stderr.
+exec 3>/dev/null # to avoid hardcoding /dev/null everywhere. For tools' stderr.
 
 self="${0##*/}" # buitin $(basename $0)
 

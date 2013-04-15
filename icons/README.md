@@ -14,7 +14,7 @@ a 48x48 icon. Image does not have to be actually that size, it will only be
 registered as such.
 
 Also, `WIDTH` is optional: installer can auto-detect image size if you have
-ImageMagik installed, which Ubuntu already ships by default.
+ImageMagick installed, which Ubuntu already ships by default.
 
 
 Generating icons
@@ -22,7 +22,7 @@ Generating icons
 
 You can generate Eudora icons yourself by extracting them from Eudora.exe:
 
-First, install ImageMagik and IcoUtils:
+First, install ImageMagick and IcoUtils:
 
 	sudo apt-get install imagemagick icoutils
 
