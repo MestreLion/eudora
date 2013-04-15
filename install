@@ -419,7 +419,7 @@ cat > "$deskfile" <<-DESKTOP
 	X-Ayatana-Desktop-Shortcuts=Compose;
 	Icon=$exec
 	TryExec=wine
-	Exec=$exec %u
+	Exec=$(printf "%q" "${deskdir}/${exec}") %U
 
 	[Compose Shortcut Group]
 	Name=Compose New Message
