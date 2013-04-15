@@ -152,7 +152,7 @@ Eudora.exe accepts as command line arguments either a mailto uri OR a list of
 filenames to be attached, but not both. Furthermore, any "attach" field of a
 mailto uri is silently ignored, since it is not part of original RFC2368
 specification. Thus, it is currently not possible to launch Eudora.exe with both
-attachments and other (to, cc, bcc, subject, body) fields.
+attachments and other (to, cc, bcc, subject, body) fields via command-line.
 
 So, when an "attach" field is present is in the mailto uri, file is tested and,
 if valid, it is passed as command line argument and the mailto uri argument is
@@ -160,7 +160,7 @@ discarted. Any other valid files passed directly in command line also makes
 eudora (this launcher) silently ignore and discart any mailto uri before
 launching Eudora.exe
 
-Valid files are the ones that satisfy ALL following conditions:
+Valid attachment files are the ones that satisfy ALL following conditions:
 
 - File must exist and not be a directory
 
@@ -168,10 +168,6 @@ Valid files are the ones that satisfy ALL following conditions:
   or contain a target of one of wine's user folders (My Documents, Desktop,
   My Pictures, etc - usually mapped via winecfg's Desktop Integration to native
   user folders \$HOME, $\HOME/Desktop, \$HOME/Pictures etc)
-
-- Due to a bug in Eudora.exe not properly handling escaping characters, file
-  name and path, when translated to a windows syntax path, must not cointain any
-  spaces
 
 All non-valid files, either from mailto uri or command line, are silently
 ignored.
@@ -475,8 +471,8 @@ translate_file() {
 			[[ "$result" ]] && winfile=$(wine winepath -w "$result")
 		fi
 
-		# Lame eudora does not support filenames with espaces (not even quoted)
-		[[ "$winfile" = *[[:blank:]]* ]] && winfile=""
+		# If filename has spaces, use the short 8.3 name instead
+		[[ "$winfile" = *[[:blank:]]* ]] && winfile=$(wine winepath -s "$winfile")
 	fi
 
 	result="$winfile"
