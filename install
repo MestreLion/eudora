@@ -32,7 +32,7 @@ name="Eudora Mail"
 exec=eudora
 
 # install prefix
-prefix=${XDG_DATA_HOME:-"$HOME"/.local}
+prefix=${XDG_DATA_HOME:-"$HOME"/.local/share}/wineprefixes
 
 # download URLs
 urlmanual=http://www.eudora.com/download/
@@ -43,7 +43,7 @@ urlpdf=http://www.eudora.com/download/eudora/windows/7.1/Eudora_71_User_Manual.p
 drives=()
 
 # Registry tweaks
-dpi=96      # Font DPI ("size")
+dpi=96      # Font DPI ("size"). Suggested is 112
 intldate=0  # "International" Date/Time format: leading zeros, 24h, dd/mm/YYYY
 
 # leave these ones alone
@@ -88,13 +88,12 @@ Options:
 -h|--help  - show this page.
 -q|--quiet - suppress informative messages.
 
---exec=NAME
-	executable name, also used as a prefix for for naming the
-	install directory, icon and .desktop files. Default "$exec"
-
 --prefix=DIR
-	parent of the install directory. Default is
-	"$prefix"
+	parent of the install directory. Default "$prefix"
+
+--exec=NAME
+	executable name, also used to name the install directory, icons, desktop
+	launcher and related files. Default "$exec"
 
 --name=NAME
 	friendly application name, for menu entries. Default "$name"
@@ -105,7 +104,7 @@ Options:
 	(A,B,C,Z are somewhat reserved in Wine). Letters like D (and perhaps E)
 	will overwrite pre-configured optical drives (CD/DVD), so re-add them
 	assigning a different letter if you want. Relative PATHs are allowed,
-	and will be relative to PREFIX/dosdevices. Examples:
+	and will be relative to PREFIX/EXEC/dosdevices. Examples:
 	--drive=D:/mnt/data --drive=E:/media/cdrom --drive=F:/dev/sr0
 	--drive=G:../../../../../Desktop/mydir
 
@@ -114,8 +113,9 @@ Options:
 	If none is provided, a menu will show currently downloaded files.
 
 --uninstall
-	Uninstall ${name}. Combine with --exec and --prefix to
-	uninstall from a custom install
+	Uninstall ${name}. Combine with --exec and --prefix to uninstall from a
+	custom install, or use the "uninstall" script located inside the install
+	directory.
 
 Copyright (C) 2012 Rodrigo Silva (MestreLion) <linux@rodrigosilva.com>
 License: GPLv3 or later. See <http://www.gnu.org/licenses/gpl.html>
@@ -163,15 +163,15 @@ done
 
 ((verbose)) && v=v
 
-xdg_data=${XDG_DATA_HOME:-"$HOME"/.local}
+xdg_data=${XDG_DATA_HOME:-"$HOME"/.local/share}
 xdg_config=${XDG_CONFIG_HOME:-"$HOME"/.config}
 
-dir=${prefix}/share/wineprefixes/${exec}
+dir=${prefix}/${exec}
 configdir="${xdg_config}/${exec}"
 deskdir=${dir}/linux
 deskfile=${deskdir}/${exec}.desktop
 execfile=${deskdir}/${exec}
-execdir=${prefix}/bin
+execdir="$HOME"/.local/bin
 
 
 # Uninstall  ---------------------------------------------
@@ -362,10 +362,10 @@ env WINEPREFIX="$dir" wine "$tarball" 2>&3 ||
 
 #wine installer clean-up
 message "cleaning wine auto-generated Eudora cruft"
-find "$xdg_data"/share/icons -iregex '.*/[A-F0-9]+_eudora.*\.[0-9]+\.png$' -delete
-find "$xdg_data"/share/icons -iregex '.*/[A-F0-9]+_qckstart.*\.[0-9]+\.png$' -delete
-rm -rf${v} "$xdg_data"/share/applications/wine/Programs/Eudora
-rm -rf${v} "$xdg_data"/share/desktop-directories/wine-Programs-Eudora.directory
+find "$xdg_data"/icons -iregex '.*/[A-F0-9]+_eudora.*\.[0-9]+\.png$' -delete
+find "$xdg_data"/icons -iregex '.*/[A-F0-9]+_qckstart.*\.[0-9]+\.png$' -delete
+rm -rf${v} "$xdg_data"/applications/wine/Programs/Eudora
+rm -rf${v} "$xdg_data"/desktop-directories/wine-Programs-Eudora.directory
 rm -rf${v} "$xdg_config"/menus/applications-merged/wine-Programs-Eudora-*.menu
 
 
