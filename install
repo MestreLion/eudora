@@ -43,7 +43,7 @@ urlpdf=http://www.eudora.com/download/eudora/windows/7.1/Eudora_71_User_Manual.p
 drives=()
 
 # Registry tweaks
-dpi=96      # Font DPI ("size"). Suggested is 112
+dpi=0       # Font DPI ("size"). Default 96, suggested 112
 intldate=0  # "International" Date/Time format: leading zeros, 24h, dd/mm/YYYY
 
 # leave these ones alone
@@ -203,13 +203,14 @@ export WINEDLLOVERRIDES=winemenubuilder.exe=d
 
 		message "removing install dir"
 		rm -rf "$dir"
+		rmdir --ignore-fail-on-non-empty "$prefix"
 
 		[[ -d "$configdir" ]] && {
 			msg="Remove personal settings in $configdir ?"
 			read -r -p "$msg (yes,NO): " confirm
 			case "$confirm" in
 			[Yy]*)
-				message "removing $configdir"
+				message "removing settings"
 				rm -rf "$configdir"
 			;;
 			esac
@@ -263,10 +264,10 @@ if [[ -z "$tarball" ]]; then
 	PS3="Choose an install (0 to quit): "
 
 	select tarball in "${options[@]}"; do
-		if   ((REPLY==${#options[@]}-1)); then
+		if   [[ "$REPLY" = ${#options[@]}-1 ]]; then
 			# Auto download
 			break
-		elif ((REPLY==${#options[@]})); then
+		elif [[ "$REPLY" = ${#options[@]} ]]; then
 			# Manual download
 			message "Opening your web browser..." ;
 			message "Download the .exe installer, save it in"
@@ -274,7 +275,7 @@ if [[ -z "$tarball" ]]; then
 			message "... and run me again"
 			xdg-open "$urlmanual"
 			quit
-		elif ((REPLY==0)); then
+		elif [[ "$REPLY" = 0 ]]; then
 			# Exit
 			quit
 		elif [[ -f "$tarball" ]]; then
@@ -293,7 +294,9 @@ if ((verbose)); then
 	echo "Executable   = $exec"
 	echo "Install dir  = $dir"
 	echo "Installer    = ${tarball:-$urlauto}"
-	echo "Wine Drives  = ${drives[@]}"
+	((${#drives[@]})) && echo "Wine Drives  = ${drives[@]}"
+	((dpi))           && echo "Font DPI     = $dpi"
+	((intldate))      && echo "Date Format  = 'mm:ss dd/MM/yyyy', 24h time format"
 	echo "To change these options, see $myname --help"
 	read -r -p "Confirm? (YES,no): " confirm
 	case "$confirm" in
@@ -464,7 +467,7 @@ xdg-desktop-menu install  --novendor "${deskdir}/${exec}-manual.desktop"
 
 
 # install, uninstall, perms and PATH
-message "copying install and uninstall scripts to $dir/bin"
+message "copying install and uninstall scripts to $deskdir"
 cp -f${v} "$mydir/$myname" "$deskdir/install"
 awk -v exec="$exec" -v prefix="$prefix" -v name="$name" \
     '/^uninstall=/{sub("=.*","=1")}
@@ -505,7 +508,7 @@ cat >> "$regfile" <<-REGEDIT
 "winemenubuilder.exe"=""
 REGEDIT
 
-if ((dpi != 96)); then
+if ((dpi)); then
 	message "adjusting font size to $dpi dpi"
 	dpihex=$(printf '%08x' "$dpi")
 	cat >> "$regfile" <<-REGEDIT
