@@ -189,10 +189,12 @@ export WINEDLLOVERRIDES=winemenubuilder.exe=d
 
 		message "removing icons"
 		for icon in "$deskdir"/*.{png,svg,xpm} ; do
-			size=${icon##*-}
-			size=${size%%.*}
+			iconsize=${icon##*-}
+			iconsize=${iconsize%%.*}
+			iconname=${icon%-*}
+			iconname=${iconname##*/}
 			xdg-icon-resource uninstall --noupdate \
-				--size "$size" "$exec" 2>/dev/null
+				--size "$iconsize" "$iconname"
 		done
 		xdg-icon-resource forceupdate
 
@@ -373,12 +375,18 @@ ln -s "$execfile" "$execdir/$exec" ||
 # icons
 message "installing icons"
 for icon in "$mydir"/icons/*.{[Pp][Nn][Gg],[Ss][Vv][Gg],[Xx][Pp][Mm]} ; do
-	size=$(icon_size "$icon") ||
+	iconsize=$(icon_size "$icon") ||
 		fatal "could not determine size of $icon. Rename it or install ImageMagick"
 	ext=${icon##*.}
-	cp -f${v} "$icon" "${deskdir}/${exec}-${size}.${ext,,}"
+	icontype=""
+	case "${icon##*/}" in
+	*[Mm][Aa][Ii][Ll][Bb][Oo][Xx]*)             icontype="-mailbox"   ;;
+	*[Pp][Uu][Rr][Ee][Vv][Oo][Ii][Cc][Ee]*)     icontype="-purevoice" ;;
+	*[Ss][Tt][Aa][Tt][Ii][Oo][Nn][Aa][Rr][Yy]*) icontype="-stationary";;
+	esac
+	cp -f${v} "$icon" "${deskdir}/${exec}${icontype}-${iconsize}.${ext,,}"
 	xdg-icon-resource install --noupdate --novendor \
-		--size "$size" "$icon" "$exec"
+		--size "$iconsize" "$icon" "${exec}${icontype}"
 done
 xdg-icon-resource forceupdate || fatal "could not install icons"
 
