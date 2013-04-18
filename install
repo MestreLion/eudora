@@ -434,8 +434,14 @@ fi
 
 
 # manual
-message "downloading and installing manual"
-wget --directory-prefix="$deskdir" "$urlpdf"
+pdf=${urlpdf##*/}
+if [[ -f "${mydir}/${pdf}" ]]; then
+	message "installing manual"
+	cp -f${v} "${mydir}/${pdf}" "$deskdir"
+else
+	message "downloading and installing manual"
+	wget --directory-prefix="$deskdir" "$urlpdf"
+fi
 cat > "${deskdir}/${exec}-manual.desktop" <<-MANUAL
 	[Desktop Entry]
 	Version=1.0
@@ -446,7 +452,7 @@ cat > "${deskdir}/${exec}-manual.desktop" <<-MANUAL
 	Categories=Application;Network;Email;
 	Terminal=false
 	Icon=application-pdf
-	Exec=xdg-open '${deskdir}/${urlpdf##*/}'
+	Exec=xdg-open '${deskdir}/${pdf}'
 MANUAL
 xdg-desktop-menu install  --novendor "${deskdir}/${exec}-manual.desktop"
 
