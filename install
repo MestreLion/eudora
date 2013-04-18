@@ -173,6 +173,8 @@ deskfile=${deskdir}/${exec}.desktop
 execfile=${deskdir}/${exec}
 execdir="$HOME"/.local/bin
 
+export WINEPREFIX=$dir
+export WINEDLLOVERRIDES=winemenubuilder.exe=d
 
 # Uninstall  ---------------------------------------------
 
@@ -320,7 +322,7 @@ exec 3> /dev/null # to avoid hardcoding /dev/null everywhere. For wine stderr.
 # wine bottle
 message "creating wine prefix $dir"
 mkdir -p${v} "$(dirname "$dir")"
-env WINEARCH=win32 WINEPREFIX="$dir" wine wineboot 2>&3 ||
+env WINEARCH=win32 wine wineboot 2>&3 ||
 	fatal "could not create wine prefix"
 until [[ -f "$dir/system.reg" ]] ; do : ; done ; sleep 1
 
@@ -350,7 +352,7 @@ else
 fi
 
 message "executing installer"
-env WINEPREFIX="$dir" wine "$tarball" 2>&3 ||
+wine "$tarball" 2>&3 ||
 	fatal "could not execute installer"
 
 # Check if completed or canceled by user
@@ -358,15 +360,6 @@ env WINEPREFIX="$dir" wine "$tarball" 2>&3 ||
 { message "please wait..."; sleep 5;
   grep -q 'Qualcomm\\\\Eudora' "$dir/system.reg"; } ||
 { rm -rf "$dir" ; quit ; }
-
-
-#wine installer clean-up
-message "cleaning wine auto-generated Eudora cruft"
-find "$xdg_data"/icons -iregex '.*/[A-F0-9]+_eudora.*\.[0-9]+\.png$' -delete
-find "$xdg_data"/icons -iregex '.*/[A-F0-9]+_qckstart.*\.[0-9]+\.png$' -delete
-rm -rf${v} "$xdg_data"/applications/wine/Programs/Eudora
-rm -rf${v} "$xdg_data"/desktop-directories/wine-Programs-Eudora.directory
-rm -rf${v} "$xdg_config"/menus/applications-merged/wine-Programs-Eudora-*.menu
 
 
 # launcher
@@ -483,9 +476,14 @@ if ((logout)); then
 	EOF
 fi
 
-
 # Registry tweaks
 regfile="$deskdir/$exec.reg"
+
+message "disabling wine built-in integration"
+cat >> "$regfile" <<-REGEDIT
+[HKEY_CURRENT_USER\Software\Wine\DllOverrides]
+"winemenubuilder.exe"=""
+REGEDIT
 
 if ((dpi != 96)); then
 	message "adjusting font size to $dpi dpi"
@@ -506,7 +504,7 @@ if ((intldate)); then
 fi
 
 if [[ -f "$regfile" ]]; then
-	env WINEPREFIX="$dir" wine regedit "$regfile" 2>&3
+	wine regedit "$regfile" 2>&3
 fi
 
 
