@@ -163,15 +163,14 @@ done
 
 ((verbose)) && v=v
 
-xdg_data=${XDG_DATA_HOME:-"$HOME"/.local/share}
-xdg_config=${XDG_CONFIG_HOME:-"$HOME"/.config}
+shopt -s nullglob
 
 dir=${prefix}/${exec}
-configdir="${xdg_config}/${exec}"
 deskdir=${dir}/linux
 deskfile=${deskdir}/${exec}.desktop
 execfile=${deskdir}/${exec}
 execdir="$HOME"/.local/bin
+configdir=${XDG_CONFIG_HOME:-"$HOME"/.config}/${exec}
 
 export WINEPREFIX=$dir
 export WINEDLLOVERRIDES=winemenubuilder.exe=d
@@ -189,14 +188,12 @@ export WINEDLLOVERRIDES=winemenubuilder.exe=d
 		xdg-desktop-icon uninstall --novendor "$exec".desktop
 
 		message "removing icons"
-		shopt -s nullglob
 		for icon in "$deskdir"/*.{png,svg,xpm} ; do
 			size=${icon##*-}
 			size=${size%%.*}
 			xdg-icon-resource uninstall --noupdate \
 				--size "$size" "$exec" 2>/dev/null
 		done
-		shopt -u nullglob
 		xdg-icon-resource forceupdate
 
 		message "removing executable"
@@ -258,9 +255,7 @@ icon_size()
 if [[ -z "$tarball" ]]; then
 
 	cd "$mydir"
-	shopt -s nullglob
 	options=( *.exe "Auto-download" "Manual download at $urlmanual" )
-	shopt -u nullglob
 
 	echo "Available installers:"
 	PS3="Choose an install (0 to quit): "
@@ -377,7 +372,6 @@ ln -s "$execfile" "$execdir/$exec" ||
 
 # icons
 message "installing icons"
-shopt -s nullglob
 for icon in "$mydir"/icons/*.{[Pp][Nn][Gg],[Ss][Vv][Gg],[Xx][Pp][Mm]} ; do
 	size=$(icon_size "$icon") ||
 		fatal "could not determine size of $icon. Rename it or install ImageMagick"
@@ -386,7 +380,6 @@ for icon in "$mydir"/icons/*.{[Pp][Nn][Gg],[Ss][Vv][Gg],[Xx][Pp][Mm]} ; do
 	xdg-icon-resource install --noupdate --novendor \
 		--size "$size" "$icon" "$exec"
 done
-shopt -u nullglob
 xdg-icon-resource forceupdate || fatal "could not install icons"
 
 
