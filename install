@@ -186,6 +186,7 @@ export WINEDLLOVERRIDES=winemenubuilder.exe=d
 	[Yy]*)
 		message "removing desktop files"
 		xdg-desktop-menu uninstall --novendor "$exec"{,-manual}.desktop
+		xdg-desktop-icon uninstall --novendor "$exec".desktop
 
 		message "removing icons"
 		shopt -s nullglob
@@ -423,6 +424,13 @@ cat > "$deskfile" <<-DESKTOP
 DESKTOP
 xdg-desktop-menu install --novendor "$deskfile" ||
 	fatal "could not install desktop file"
+
+
+# ~/Desktop shortcut
+shortcuts=( "$dir"/drive_c/users/Public/Desktop/*.lnk )
+if (( ${#shortcuts[@]} )); then
+	xdg-desktop-icon install --novendor "$deskfile"
+fi
 
 
 # manual
