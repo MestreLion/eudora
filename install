@@ -171,6 +171,7 @@ deskfile=${deskdir}/${exec}.desktop
 execfile=${deskdir}/${exec}
 execdir="$HOME"/.local/bin
 configdir=${XDG_CONFIG_HOME:-"$HOME"/.config}/${exec}
+mimeprefix=application/vnd.${exec}
 
 export WINEPREFIX=$dir
 export WINEDLLOVERRIDES=winemenubuilder.exe=d
@@ -191,12 +192,17 @@ export WINEDLLOVERRIDES=winemenubuilder.exe=d
 		for icon in "$deskdir"/*.{png,svg,xpm} ; do
 			iconsize=${icon##*-}
 			iconsize=${iconsize%%.*}
-			iconname=${icon%-*}
-			iconname=${iconname##*/}
+			icontag=${icon##*/}
+			context=${icontag%%-*}
+			iconname=${icontag#$context}
 			xdg-icon-resource uninstall --noupdate \
+				--context "$context" \
 				--size "$iconsize" "$iconname"
 		done
 		xdg-icon-resource forceupdate
+
+		message "removing mime types"
+		xdg-mime uninstall --novendor "$exec".xml
 
 		message "removing executable"
 		rm -rf "$execdir/$exec"
@@ -248,6 +254,19 @@ icon_size()
 	else
 		return 1
 	fi
+}
+
+mime_def()
+{
+	local mimesuffix=$1
+	local glob=$2
+	local comment=$3
+	cat <<-MIME
+	    <mime-type type="${mimeprefix}.${mimesuffix}">
+	        <glob pattern="$glob"/>
+	        <comment>$comment</comment>
+	    </mime-type>
+	MIME
 }
 
 # ---------------------------------------------------------------
@@ -381,17 +400,38 @@ for icon in "$mydir"/icons/*.{[Pp][Nn][Gg],[Ss][Vv][Gg],[Xx][Pp][Mm]} ; do
 	iconsize=$(icon_size "$icon") ||
 		fatal "could not determine size of $icon. Rename it or install ImageMagick"
 	ext=${icon##*.}
-	icontype=""
+	iconmime=""
 	case "${icon##*/}" in
-	*[Mm][Aa][Ii][Ll][Bb][Oo][Xx]*)             icontype="-mailbox"   ;;
-	*[Pp][Uu][Rr][Ee][Vv][Oo][Ii][Cc][Ee]*)     icontype="-purevoice" ;;
-	*[Ss][Tt][Aa][Tt][Ii][Oo][Nn][Aa][Rr][Yy]*) icontype="-stationary";;
+	*[Mm][Aa][Ii][Ll][Bb][Oo][Xx]*)             iconmime="mailbox"   ;;
+	*[Pp][Uu][Rr][Ee][Vv][Oo][Ii][Cc][Ee]*)     iconmime="purevoice" ;;
+	*[Ss][Tt][Aa][Tt][Ii][Oo][Nn][Aa][Rr][Yy]*) iconmime="stationary";;
 	esac
-	cp -f${v} "$icon" "${deskdir}/${exec}${icontype}-${iconsize}.${ext,,}"
-	xdg-icon-resource install --noupdate --novendor \
-		--size "$iconsize" "$icon" "${exec}${icontype}"
+	if [[ "$iconmime" ]]; then
+		context=mimetypes
+		newicon=${mimeprefix//\//-}.${iconmime}
+	else
+		context=apps
+		newicon=${exec}
+	fi
+	cp -f "$icon" "${deskdir}/${context}-${newicon}-${iconsize}.${ext,,}"
+	xdg-icon-resource install --noupdate --novendor --context ${context} \
+		--size "$iconsize" "$icon" "${newicon}"
 done
 xdg-icon-resource forceupdate || fatal "could not install icons"
+
+
+# mime types
+message "registering mime types"
+mimefile=${deskdir}/${exec}.xml
+cat > "$mimefile" <<MIME
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+$(mime_def "mailbox"    "*.mbx" "Eudora Mailbox")
+$(mime_def "stationary" "*.sta" "Eudora Stationary")
+$(mime_def "purevoice"  "*.qcp" "Qualcomm PureVoice")
+</mime-info>
+MIME
+xdg-mime install --novendor "$mimefile"
 
 
 # desktop file
@@ -412,7 +452,7 @@ cat > "$deskfile" <<-DESKTOP
 	Categories=Application;Office;Network;Email;
 	Terminal=false
 	StartupNotify=true
-	MimeType=x-scheme-handler/mailto;
+	MimeType=x-scheme-handler/mailto;${mimeprefix}.mailbox;${mimeprefix}.stationary;
 	StartupWMClass=Eudora.exe
 	X-Ayatana-Desktop-Shortcuts=X-Compose;
 	Icon=$exec
