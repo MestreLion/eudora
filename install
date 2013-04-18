@@ -523,4 +523,4 @@ fi
 
 
 message "Successfully installed ${name}!"
-((logout)) && echo "Log out for changes to apply..."
+((logout)) && echo "$(tput bold)Log out for changes to apply!$(tput sgr0)"
