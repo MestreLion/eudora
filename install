@@ -406,17 +406,17 @@ cat > "$deskfile" <<-DESKTOP
 	Comment=Read and write email with Eudora
 	Comment[pt]=Leia e escreva emails com Eudora
 	Comment[pt_BR]=Leia e escreva emails com Eudora
-	Categories=Application;Network;Email;
+	Categories=Application;Office;Network;Email;
 	Terminal=false
 	StartupNotify=true
 	MimeType=x-scheme-handler/mailto;
 	StartupWMClass=Eudora.exe
-	X-Ayatana-Desktop-Shortcuts=Compose;
+	X-Ayatana-Desktop-Shortcuts=X-Compose;
 	Icon=$exec
 	TryExec=wine
 	Exec=$(printf "%q" "${deskdir}/${exec}") %U
 
-	[Compose Shortcut Group]
+	[X-Compose Shortcut Group]
 	Name=Compose New Message
 	Name[pt]=Criar nova mensagem
 	Name[pt_BR]=Criar nova mensagem
