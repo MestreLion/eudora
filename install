@@ -430,7 +430,7 @@ cat > "$mimefile" <<MIME
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
 $(mime_def "mailbox"    "*.mbx" "Eudora Mailbox")
 $(mime_def "stationary" "*.sta" "Eudora Stationary")
-$(mime_def "purevoice"  "*.qcp" "Qualcomm PureVoice")
+$(mime_def "purevoice"  "*.qcp" "QUALCOMM PureVoice File")
 </mime-info>
 MIME
 xdg-mime install --novendor "$mimefile"
@@ -454,7 +454,7 @@ cat > "$deskfile" <<-DESKTOP
 	Categories=Application;Office;Network;Email;
 	Terminal=false
 	StartupNotify=true
-	MimeType=x-scheme-handler/mailto;${mimeprefix}.mailbox;${mimeprefix}.stationary;
+	MimeType=x-scheme-handler/mailto;${mimeprefix}.mailbox;${mimeprefix}.stationary;${mimeprefix}.purevoice;
 	StartupWMClass=Eudora.exe
 	X-Ayatana-Desktop-Shortcuts=X-Compose;
 	Icon=$exec
