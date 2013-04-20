@@ -50,6 +50,7 @@ intldate=0  # "International" Date/Time format: leading zeros, 24h, dd/mm/YYYY
 logout=1  # install changes this to 0 if exec dir is already in PATH
 verbose=1
 uninstall=0
+manual=1
 
 # ---------------------------------------------------------------
 # Boring UI stuff...
@@ -129,6 +130,7 @@ while (( $# )); do
 	-h|--help     ) usage                ;;
 	-q|--quiet    ) verbose=0            ;;
 	--intl-date   ) intldate=1           ;;
+	--no-manual   ) manual=0             ;;
 	--name=*      ) name="${1#*=}"       ;;
 	--exec=*      ) exec="${1#*=}"       ;;
 	--prefix=*    ) prefix="${1#*=}"     ;;
@@ -483,28 +485,29 @@ fi
 
 
 # manual
-pdf=${urlpdf##*/}
-if [[ -f "${mydir}/${pdf}" ]]; then
-	message "installing manual"
-	cp -f${v} "${mydir}/${pdf}" "$deskdir"
-else
-	message "downloading and installing manual"
-	wget --directory-prefix="$deskdir" "$urlpdf"
+if ((manual)); then
+	pdf=${urlpdf##*/}
+	if [[ -f "${mydir}/${pdf}" ]]; then
+		message "installing manual"
+		cp -f${v} "${mydir}/${pdf}" "$deskdir"
+	else
+		message "downloading and installing manual"
+		wget --directory-prefix="$deskdir" "$urlpdf"
+	fi
+	cat > "${deskdir}/${exec}-manual.desktop" <<-MANUAL
+		[Desktop Entry]
+		Version=1.0
+		Type=Application
+		Name=$name User Guide
+		Name[pt]=$name - Guia do Usuário
+		Name[pt_BR]=$name - Guia do Usuário
+		Categories=Application;Network;Email;
+		Terminal=false
+		Icon=application-pdf
+		Exec=xdg-open '${deskdir}/${pdf}'
+	MANUAL
+	xdg-desktop-menu install  --novendor "${deskdir}/${exec}-manual.desktop"
 fi
-cat > "${deskdir}/${exec}-manual.desktop" <<-MANUAL
-	[Desktop Entry]
-	Version=1.0
-	Type=Application
-	Name=$name User Guide
-	Name[pt]=$name - Guia do Usuário
-	Name[pt_BR]=$name - Guia do Usuário
-	Categories=Application;Network;Email;
-	Terminal=false
-	Icon=application-pdf
-	Exec=xdg-open '${deskdir}/${pdf}'
-MANUAL
-xdg-desktop-menu install  --novendor "${deskdir}/${exec}-manual.desktop"
-
 
 # install, uninstall, perms and PATH
 message "copying install and uninstall scripts to $deskdir"
