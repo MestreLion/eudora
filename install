@@ -285,8 +285,9 @@ if [[ -z "$tarball" ]]; then
 	PS3="Choose an install (0 to quit): "
 
 	select tarball in "${options[@]}"; do
-		if   [[ "$REPLY" = ${#options[@]}-1 ]]; then
+		if   [[ "$REPLY" = $(( ${#options[@]}-1 )) ]]; then
 			# Auto download
+			tarball=""
 			break
 		elif [[ "$REPLY" = ${#options[@]} ]]; then
 			# Manual download
