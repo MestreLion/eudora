@@ -461,17 +461,16 @@ cat > "$deskfile" <<-DESKTOP
 	StartupNotify=true
 	MimeType=x-scheme-handler/mailto;${mimeprefix}.mailbox;${mimeprefix}.stationary;${mimeprefix}.purevoice;
 	StartupWMClass=Eudora.exe
-	X-Ayatana-Desktop-Shortcuts=X-Compose;
+	Actions=Compose;
 	Icon=$exec
 	TryExec=wine
 	Exec=$(printf "%q" "${deskdir}/${exec}") %U
 
-	[X-Compose Shortcut Group]
+	[Desktop Action Compose]
 	Name=Compose New Message
 	Name[pt]=Criar nova mensagem
 	Name[pt_BR]=Criar nova mensagem
-	Exec=eudora "mailto:?body=%0A"
-	TargetEnvironment=Messaging Menu;Unity;
+	Exec=eudora "mailto:?body=%%0A"
 DESKTOP
 xdg-desktop-menu install --novendor "$deskfile" ||
 	fatal "could not install desktop file"
