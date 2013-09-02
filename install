@@ -45,6 +45,7 @@ drives=()
 # Registry tweaks
 dpi=0       # Font DPI ("size"). Default 96, suggested 112
 intldate=0  # "International" Date/Time format: leading zeros, 24h, dd/mm/YYYY
+esoteric=0  # Enable extra settings plugin
 
 # leave these ones alone
 logout=1  # install changes this to 0 if exec dir is already in PATH
@@ -130,6 +131,7 @@ while (( $# )); do
 	-h|--help     ) usage                ;;
 	-q|--quiet    ) verbose=0            ;;
 	--intl-date   ) intldate=1           ;;
+	--esoteric    ) esoteric=1           ;;
 	--no-manual   ) manual=0             ;;
 	--name=*      ) name="${1#*=}"       ;;
 	--exec=*      ) exec="${1#*=}"       ;;
@@ -379,11 +381,13 @@ wine "$tarball" 2>&3 ||
 	fatal "could not execute installer"
 
 # Check if completed or canceled by user
-[[ "$(find "$dir/drive_c" -name 'Eudora.exe')" ]] ||
-{ message "please wait..."; sleep 5;
-  grep -q 'Qualcomm\\\\Eudora' "$dir/system.reg"; } ||
-{ rm -rf "$dir" ; quit ; }
-
+eudoradir=$(dirname "$(find "$dir/drive_c" -name 'Eudora.exe')")
+if [[ -z "$eudoradir" ]]; then
+	message "please wait..."
+	sleep 5
+	grep -q 'Qualcomm\\\\Eudora' "$dir/system.reg" ||
+		{ rm -rf "$dir" ; quit ; }
+fi
 
 # launcher
 message "creating launcher $execfile"
@@ -574,6 +578,14 @@ if [[ -f "$regfile" ]]; then
 	wine regedit "$regfile" 2>&3
 fi
 
+# Other tweaks
+
+# Enable the Esoteric Extra Options plugin
+# See http://www.eudora.com/techsupport/kb/1501hq.html
+# and http://www.eudora.com/techsupport/kb/2307hq.html
+if ((esoteric)) && [[ "$eudoradir" ]]; then
+	cp "$eudoradir"/extrastuff/esoteric.epi "$eudoradir"
+fi
 
 message "Successfully installed ${name}!"
 ((logout)) && echo "$(tput bold)Log out for changes to apply!$(tput sgr0)"
