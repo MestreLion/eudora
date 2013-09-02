@@ -477,7 +477,7 @@ xdg-desktop-menu install --novendor "$deskfile" ||
 
 
 # ~/Desktop shortcut
-shortcuts=( "$dir"/drive_c/users/Public/Desktop/*.lnk )
+shortcuts=( "$dir"/drive_c/users/Public/*/*.lnk )
 if (( ${#shortcuts[@]} )); then
 	shortcutfile="${deskdir}/${exec}-desktop.desktop"
 	shortcutname="${shortcuts%.*}"
