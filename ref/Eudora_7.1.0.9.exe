@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html lang="en" class="no-js oldie">
+<![endif]-->
+<!--[if IE 9 ]>
+<html lang="en" class="no-js ie9">
+<![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en" style="margin: 0 !important" class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><script type="text/javascript">(window.NREUM||(NREUM={})).init={ajax:{deny_list:["bam.nr-data.net"]}};(window.NREUM||(NREUM={})).loader_config={licenseKey:"3711322ece",applicationID:"406198101"};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var i=e[n]={exports:{}};t[n][0].call(i.exports,function(e){var i=t[n][1][e];return r(i||e)},i,i.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<n.length;i++)r(n[i]);return r}({1:[function(t,e,n){function r(){}function i(t,e,n,r){return function(){return s.recordSupportability("API/"+e+"/called"),o(t+e,[u.now()].concat(c(arguments)),n?null:this,r),n?void 0:this}}var o=t("handle"),a=t(9),c=t(10),f=t("ee").get("tracer"),u=t("loader"),s=t(4),d=NREUM;"undefined"==typeof window.newrelic&&(newrelic=d);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",v=l+"ixn-";a(p,function(t,e){d[e]=i(l,e,!0,"api")}),d.addPageAction=i(l,"addPageAction",!0),d.setCurrentRouteName=i(l,"routeName",!0),e.exports=newrelic,d.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(t,e){var n={},r=this,i="function"==typeof e;return o(v+"tracer",[u.now(),t,n],r),function(){if(f.emit((i?"":"no-")+"fn-start",[u.now(),r,i],n),i)try{return e.apply(this,arguments)}catch(t){throw f.emit("fn-err",[arguments,this,t],n),t}finally{f.emit("fn-end",[u.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,e){m[e]=i(v,e)}),newrelic.noticeError=function(t,e){"string"==typeof t&&(t=new Error(t)),s.recordSupportability("API/noticeError/called"),o("err",[t,u.now(),!1,e])}},{}],2:[function(t,e,n){function r(t){if(NREUM.init){for(var e=NREUM.init,n=t.split("."),r=0;r<n.length-1;r++)if(e=e[n[r]],"object"!=typeof e)return;return e=e[n[n.length-1]]}}e.exports={getConfiguration:r}},{}],3:[function(t,e,n){var r=!1;try{var i=Object.defineProperty({},"passive",{get:function(){r=!0}});window.addEventListener("testPassive",null,i),window.removeEventListener("testPassive",null,i)}catch(o){}e.exports=function(t){return r?{passive:!0,capture:!!t}:!!t}},{}],4:[function(t,e,n){function r(t,e){var n=[a,t,{name:t},e];return o("storeMetric",n,null,"api"),n}function i(t,e){var n=[c,t,{name:t},e];return o("storeEventMetrics",n,null,"api"),n}var o=t("handle"),a="sm",c="cm";e.exports={constants:{SUPPORTABILITY_METRIC:a,CUSTOM_METRIC:c},recordSupportability:r,recordCustom:i}},{}],5:[function(t,e,n){function r(){return c.exists&&performance.now?Math.round(performance.now()):(o=Math.max((new Date).getTime(),o))-a}function i(){return o}var o=(new Date).getTime(),a=o,c=t(11);e.exports=r,e.exports.offset=a,e.exports.getLastTimestamp=i},{}],6:[function(t,e,n){function r(t,e){var n=t.getEntries();n.forEach(function(t){"first-paint"===t.name?l("timing",["fp",Math.floor(t.startTime)]):"first-contentful-paint"===t.name&&l("timing",["fcp",Math.floor(t.startTime)])})}function i(t,e){var n=t.getEntries();if(n.length>0){var r=n[n.length-1];if(u&&u<r.startTime)return;var i=[r],o=a({});o&&i.push(o),l("lcp",i)}}function o(t){t.getEntries().forEach(function(t){t.hadRecentInput||l("cls",[t])})}function a(t){var e=navigator.connection||navigator.mozConnection||navigator.webkitConnection;if(e)return e.type&&(t["net-type"]=e.type),e.effectiveType&&(t["net-etype"]=e.effectiveType),e.rtt&&(t["net-rtt"]=e.rtt),e.downlink&&(t["net-dlink"]=e.downlink),t}function c(t){if(t instanceof y&&!w){var e=Math.round(t.timeStamp),n={type:t.type};a(n),e<=v.now()?n.fid=v.now()-e:e>v.offset&&e<=Date.now()?(e-=v.offset,n.fid=v.now()-e):e=v.now(),w=!0,l("timing",["fi",e,n])}}function f(t){"hidden"===t&&(u=v.now(),l("pageHide",[u]))}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var u,s,d,p,l=t("handle"),v=t("loader"),m=t(8),g=t(3),y=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){s=new PerformanceObserver(r);try{s.observe({entryTypes:["paint"]})}catch(h){}d=new PerformanceObserver(i);try{d.observe({entryTypes:["largest-contentful-paint"]})}catch(h){}p=new PerformanceObserver(o);try{p.observe({type:"layout-shift",buffered:!0})}catch(h){}}if("addEventListener"in document){var w=!1,b=["click","keydown","mousedown","pointerdown","touchstart"];b.forEach(function(t){document.addEventListener(t,c,g(!1))})}m(f)}},{}],7:[function(t,e,n){function r(t,e){if(!i)return!1;if(t!==i)return!1;if(!e)return!0;if(!o)return!1;for(var n=o.split("."),r=e.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var c=navigator.userAgent,f=c.match(a);f&&c.indexOf("Chrome")===-1&&c.indexOf("Chromium")===-1&&(i="Safari",o=f[1])}e.exports={agent:i,version:o,match:r}},{}],8:[function(t,e,n){function r(t){function e(){t(c&&document[c]?document[c]:document[o]?"hidden":"visible")}"addEventListener"in document&&a&&document.addEventListener(a,e,i(!1))}var i=t(3);e.exports=r;var o,a,c;"undefined"!=typeof document.hidden?(o="hidden",a="visibilitychange",c="visibilityState"):"undefined"!=typeof document.msHidden?(o="msHidden",a="msvisibilitychange"):"undefined"!=typeof document.webkitHidden&&(o="webkitHidden",a="webkitvisibilitychange",c="webkitVisibilityState")},{}],9:[function(t,e,n){function r(t,e){var n=[],r="",o=0;for(r in t)i.call(t,r)&&(n[o]=e(r,t[r]),o+=1);return n}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],10:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,i=n-e||0,o=Array(i<0?0:i);++r<i;)o[r]=t[e+r];return o}e.exports=r},{}],11:[function(t,e,n){e.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(t,e,n){function r(){}function i(t){function e(t){return t&&t instanceof r?t:t?u(t,f,a):a()}function n(n,r,i,o,a){if(a!==!1&&(a=!0),!l.aborted||o){t&&a&&t(n,r,i);for(var c=e(i),f=m(n),u=f.length,s=0;s<u;s++)f[s].apply(c,r);var p=d[w[n]];return p&&p.push([b,n,r,c]),c}}function o(t,e){h[t]=m(t).concat(e)}function v(t,e){var n=h[t];if(n)for(var r=0;r<n.length;r++)n[r]===e&&n.splice(r,1)}function m(t){return h[t]||[]}function g(t){return p[t]=p[t]||i(n)}function y(t,e){l.aborted||s(t,function(t,n){e=e||"feature",w[n]=e,e in d||(d[e]=[])})}var h={},w={},b={on:o,addEventListener:o,removeEventListener:v,emit:n,get:g,listeners:m,context:e,buffer:y,abort:c,aborted:!1};return b}function o(t){return u(t,f,a)}function a(){return new r}function c(){(d.api||d.feature)&&(l.aborted=!0,d=l.backlog={})}var f="nr@context",u=t("gos"),s=t(9),d={},p={},l=e.exports=i();e.exports.getOrSetContext=o,l.backlog=d},{}],gos:[function(t,e,n){function r(t,e,n){if(i.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return t[e]=r,r}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){i.buffer([t],r),i.emit(t,e,n)}var i=t("ee").get("handle");e.exports=r,r.ee=i},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,o,function(){return i++})}var i=1,o="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!M++){var t=T.info=NREUM.info,e=m.getElementsByTagName("script")[0];if(setTimeout(u.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&e))return u.abort();f(x,function(e,n){t[e]||(t[e]=n)});var n=a();c("mark",["onload",n+T.offset],null,"api"),c("timing",["load",n]);var r=m.createElement("script");0===t.agent.indexOf("http://")||0===t.agent.indexOf("https://")?r.src=t.agent:r.src=l+"://"+t.agent,e.parentNode.insertBefore(r,e)}}function i(){"complete"===m.readyState&&o()}function o(){c("mark",["domContent",a()+T.offset],null,"api")}var a=t(5),c=t("handle"),f=t(9),u=t("ee"),s=t(7),d=t(2),p=t(3),l=d.getConfiguration("ssl")===!1?"http":"https",v=window,m=v.document,g="addEventListener",y="attachEvent",h=v.XMLHttpRequest,w=h&&h.prototype,b=!1;NREUM.o={ST:setTimeout,SI:v.setImmediate,CT:clearTimeout,XHR:h,REQ:v.Request,EV:v.Event,PR:v.Promise,MO:v.MutationObserver};var E=""+location,x={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1216.min.js"},O=h&&w&&w[g]&&!/CriOS/.test(navigator.userAgent),T=e.exports={offset:a.getLastTimestamp(),now:a,origin:E,features:{},xhrWrappable:O,userAgent:s,disabled:b};if(!b){t(1),t(6),m[g]?(m[g]("DOMContentLoaded",o,p(!1)),v[g]("load",r,p(!1))):(m[y]("onreadystatechange",i),v[y]("onload",r)),c("mark",["firstbyte",a.getLastTimestamp()],null,"api");var M=0}},{}],"wrap-function":[function(t,e,n){function r(t,e){function n(e,n,r,f,u){function nrWrapper(){var o,a,s,p;try{a=this,o=d(arguments),s="function"==typeof r?r(o,a):r||{}}catch(l){i([l,"",[o,a,f],s],t)}c(n+"start",[o,a,f],s,u);try{return p=e.apply(a,o)}catch(v){throw c(n+"err",[o,a,v],s,u),v}finally{c(n+"end",[o,a,p],s,u)}}return a(e)?e:(n||(n=""),nrWrapper[p]=e,o(e,nrWrapper,t),nrWrapper)}function r(t,e,r,i,o){r||(r="");var c,f,u,s="-"===r.charAt(0);for(u=0;u<e.length;u++)f=e[u],c=t[f],a(c)||(t[f]=n(c,s?f+r:r,i,f,o))}function c(n,r,o,a){if(!v||e){var c=v;v=!0;try{t.emit(n,r,o,e,a)}catch(f){i([f,n,r,o],t)}v=c}}return t||(t=s),n.inPlace=r,n.flag=p,n}function i(t,e){e||(e=s);try{e.emit("internal-error",t)}catch(n){}}function o(t,e,n){if(Object.defineProperty&&Object.keys)try{var r=Object.keys(t);return r.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(o){i([o],n)}for(var a in t)l.call(t,a)&&(e[a]=t[a]);return e}function a(t){return!(t&&t instanceof Function&&t.apply&&!t[p])}function c(t,e){var n=e(t);return n[p]=t,o(t,n,s),n}function f(t,e,n){var r=t[e];t[e]=c(r,n)}function u(){for(var t=arguments.length,e=new Array(t),n=0;n<t;++n)e[n]=arguments[n];return e}var s=t("ee"),d=t(10),p="nr@original",l=Object.prototype.hasOwnProperty,v=!1;e.exports=r,e.exports.wrapFunction=c,e.exports.wrapInPlace=f,e.exports.argsToArray=u},{}]},{},["loader"]);</script>
+
+    <link rel="icon" type="image/x-icon" href="/wp-content/themes/bsdstarter/favicon.ico">
+    <link rel="shortcut icon" href="/wp-content/themes/bsdstarter/favicon.ico">
+
+    <link rel="stylesheet" href="/wp-content/themes/bsdstarter/assets/css/mediaelementplayer.min.css" type="text/css" media="all">
+    <link rel="stylesheet" href="/wp-content/themes/bsdstarter/style.css" type="text/css" media="all">
+
+    <title>The Eudora™ Email Client Source Code - CHM</title>
+
+<!-- This site is optimized with the Yoast SEO Premium plugin v11.6 - https://yoast.com/wordpress/plugins/seo/ -->
+<link rel="canonical" href="https://computerhistory.org/blog/the-eudora-email-client-source-code/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="The Eudora™ Email Client Source Code - CHM" />
+<meta property="og:description" content="Electronic mail is one of “killer apps” of networked computing. The ability to quickly send and receive messages without having to be online at the same time created a new form of human communication. By now billions of people have used email." />
+<meta property="og:url" content="https://computerhistory.org/blog/the-eudora-email-client-source-code/" />
+<meta property="og:site_name" content="CHM" />
+<meta property="article:publisher" content="https://www.facebook.com/computerhistory/" />
+<meta property="article:section" content="From the Collection" />
+<meta property="article:published_time" content="2018-05-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-08-20T02:37:30+00:00" />
+<meta property="og:updated_time" content="2021-08-20T02:37:30+00:00" />
+<meta property="og:image" content="https://computerhistory.org/wp-content/uploads/2019/07/Eudora_splash.jpg" />
+<meta property="og:image:secure_url" content="https://computerhistory.org/wp-content/uploads/2019/07/Eudora_splash.jpg" />
+<meta property="og:image:width" content="800" />
+<meta property="og:image:height" content="472" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:description" content="Electronic mail is one of “killer apps” of networked computing. The ability to quickly send and receive messages without having to be online at the same time created a new form of human communication. By now billions of people have used email." />
+<meta name="twitter:title" content="The Eudora™ Email Client Source Code - CHM" />
+<meta name="twitter:site" content="@ComputerHistory" />
+<meta name="twitter:image" content="https://computerhistory.org/wp-content/uploads/2019/07/Eudora_splash.jpg" />
+<meta name="twitter:creator" content="@ComputerHistory" />
+<script type='application/ld+json' class='yoast-schema-graph yoast-schema-graph--main'>{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://computerhistory.org/#organization","name":"Computer History Museum","url":"https://computerhistory.org/","sameAs":["https://www.facebook.com/computerhistory/","https://www.instagram.com/computerhistory/","https://www.youtube.com/user/ComputerHistory","https://en.wikipedia.org/wiki/Computer_History_Museum","https://twitter.com/ComputerHistory"],"logo":{"@type":"ImageObject","@id":"https://computerhistory.org/#logo","url":"https://computerhistory.org/wp-content/uploads/2019/07/chm_logo_400x400.jpg","width":800,"height":800,"caption":"Computer History Museum"},"image":{"@id":"https://computerhistory.org/#logo"}},{"@type":"WebSite","@id":"https://computerhistory.org/#website","url":"https://computerhistory.org/","name":"CHM","publisher":{"@id":"https://computerhistory.org/#organization"},"potentialAction":{"@type":"SearchAction","target":"https://computerhistory.org/?s={search_term_string}","query-input":"required name=search_term_string"}},{"@type":"ImageObject","@id":"https://computerhistory.org/blog/the-eudora-email-client-source-code/#primaryimage","url":"https://computerhistory.org/wp-content/uploads/2019/07/Eudora_splash.jpg","width":800,"height":472},{"@type":"WebPage","@id":"https://computerhistory.org/blog/the-eudora-email-client-source-code/#webpage","url":"https://computerhistory.org/blog/the-eudora-email-client-source-code/","inLanguage":"en-US","name":"The Eudora\u2122 Email Client Source Code - CHM","isPartOf":{"@id":"https://computerhistory.org/#website"},"primaryImageOfPage":{"@id":"https://computerhistory.org/blog/the-eudora-email-client-source-code/#primaryimage"},"datePublished":"2018-05-22T00:00:00+00:00","dateModified":"2021-08-20T02:37:30+00:00"},{"@type":"Article","@id":"https://computerhistory.org/blog/the-eudora-email-client-source-code/#article","isPartOf":{"@id":"https://computerhistory.org/blog/the-eudora-email-client-source-code/#webpage"},"author":{"@id":"https://computerhistory.org/#/schema/person/e2698637e556aec8a0a3caec454bf40f"},"headline":"The Eudora\u2122 Email Client Source Code","datePublished":"2018-05-22T00:00:00+00:00","dateModified":"2021-08-20T02:37:30+00:00","commentCount":0,"mainEntityOfPage":{"@id":"https://computerhistory.org/blog/the-eudora-email-client-source-code/#webpage"},"publisher":{"@id":"https://computerhistory.org/#organization"},"image":{"@id":"https://computerhistory.org/blog/the-eudora-email-client-source-code/#primaryimage"},"articleSection":"From the Collection"},{"@type":["Person"],"@id":"https://computerhistory.org/#/schema/person/e2698637e556aec8a0a3caec454bf40f","name":"tluong","image":{"@type":"ImageObject","@id":"https://computerhistory.org/#authorlogo","url":"https://secure.gravatar.com/avatar/a1c6008f89ab09a82eb265d4f052df75?s=96&d=mm&r=g","caption":"tluong"},"sameAs":[]}]}</script>
+<!-- / Yoast SEO Premium plugin. -->
+
+<link rel='dns-prefetch' href='//static.addtoany.com' />
+<link rel='dns-prefetch' href='//computerhistory.org' />
+<link rel='dns-prefetch' href='//www.google.com' />
+<link rel='dns-prefetch' href='//addevent.com' />
+<link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="CHM &raquo; The Eudora™ Email Client Source Code Comments Feed" href="https://computerhistory.org/blog/the-eudora-email-client-source-code/feed/" />
+<link rel='stylesheet' id='wp-block-library-css'  href='https://computerhistory.org/wp-includes/css/dist/block-library/style.min.css?ver=5.2.3' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://computerhistory.org/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.1.6' type='text/css' media='all' />
+<link rel='stylesheet' id='popup-maker-site-css'  href='https://computerhistory.org/wp-content/plugins/popup-maker/assets/css/pum-site.min.css?ver=1.16.4' type='text/css' media='all' />
+<style id='popup-maker-site-inline-css' type='text/css'>
+/* Popup Google Fonts */
+@import url('//fonts.googleapis.com/css?family=Montserrat:100');
+
+/* Popup Theme 20379: Default Theme */
+.pum-theme-20379, .pum-theme-default-theme { background-color: rgba( 255, 255, 255, 1.00 ) } 
+.pum-theme-20379 .pum-container, .pum-theme-default-theme .pum-container { padding: 18px; border-radius: 0px; border: 1px none #000000; box-shadow: 1px 1px 3px 0px rgba( 2, 2, 2, 0.23 ); background-color: rgba( 249, 249, 249, 1.00 ) } 
+.pum-theme-20379 .pum-title, .pum-theme-default-theme .pum-title { color: #000000; text-align: left; text-shadow: 0px 0px 0px rgba( 2, 2, 2, 0.23 ); font-family: inherit; font-weight: 400; font-size: 32px; font-style: normal; line-height: 36px } 
+.pum-theme-20379 .pum-content, .pum-theme-default-theme .pum-content { color: #8c8c8c; font-family: inherit; font-weight: 400; font-style: inherit } 
+.pum-theme-20379 .pum-content + .pum-close, .pum-theme-default-theme .pum-content + .pum-close { position: absolute; height: auto; width: auto; left: auto; right: 0px; bottom: auto; top: 0px; padding: 8px; color: #ffffff; font-family: inherit; font-weight: 400; font-size: 12px; font-style: inherit; line-height: 36px; border: 1px none #ffffff; border-radius: 0px; box-shadow: 1px 1px 3px 0px rgba( 2, 2, 2, 0.23 ); text-shadow: 0px 0px 0px rgba( 0, 0, 0, 0.23 ); background-color: rgba( 0, 183, 205, 1.00 ) } 
+
+/* Popup Theme 20380: Light Box */
+.pum-theme-20380, .pum-theme-lightbox { background-color: rgba( 0, 0, 0, 0.60 ) } 
+.pum-theme-20380 .pum-container, .pum-theme-lightbox .pum-container { padding: 18px; border-radius: 3px; border: 8px solid #000000; box-shadow: 0px 0px 30px 0px rgba( 2, 2, 2, 1.00 ); background-color: rgba( 255, 255, 255, 1.00 ) } 
+.pum-theme-20380 .pum-title, .pum-theme-lightbox .pum-title { color: #000000; text-align: left; text-shadow: 0px 0px 0px rgba( 2, 2, 2, 0.23 ); font-family: inherit; font-weight: 100; font-size: 32px; line-height: 36px } 
+.pum-theme-20380 .pum-content, .pum-theme-lightbox .pum-content { color: #000000; font-family: inherit; font-weight: 100 } 
+.pum-theme-20380 .pum-content + .pum-close, .pum-theme-lightbox .pum-content + .pum-close { position: absolute; height: 26px; width: 26px; left: auto; right: -13px; bottom: auto; top: -13px; padding: 0px; color: #ffffff; font-family: Arial; font-weight: 100; font-size: 24px; line-height: 24px; border: 2px solid #ffffff; border-radius: 26px; box-shadow: 0px 0px 15px 1px rgba( 2, 2, 2, 0.75 ); text-shadow: 0px 0px 0px rgba( 0, 0, 0, 0.23 ); background-color: rgba( 0, 0, 0, 1.00 ) } 
+
+/* Popup Theme 20381: Enterprise Blue */
+.pum-theme-20381, .pum-theme-enterprise-blue { background-color: rgba( 0, 0, 0, 0.70 ) } 
+.pum-theme-20381 .pum-container, .pum-theme-enterprise-blue .pum-container { padding: 28px; border-radius: 5px; border: 1px none #000000; box-shadow: 0px 10px 25px 4px rgba( 2, 2, 2, 0.50 ); background-color: rgba( 255, 255, 255, 1.00 ) } 
+.pum-theme-20381 .pum-title, .pum-theme-enterprise-blue .pum-title { color: #315b7c; text-align: left; text-shadow: 0px 0px 0px rgba( 2, 2, 2, 0.23 ); font-family: inherit; font-weight: 100; font-size: 34px; line-height: 36px } 
+.pum-theme-20381 .pum-content, .pum-theme-enterprise-blue .pum-content { color: #2d2d2d; font-family: inherit; font-weight: 100 } 
+.pum-theme-20381 .pum-content + .pum-close, .pum-theme-enterprise-blue .pum-content + .pum-close { position: absolute; height: 28px; width: 28px; left: auto; right: 8px; bottom: auto; top: 8px; padding: 4px; color: #ffffff; font-family: Times New Roman; font-weight: 100; font-size: 20px; line-height: 20px; border: 1px none #ffffff; border-radius: 42px; box-shadow: 0px 0px 0px 0px rgba( 2, 2, 2, 0.23 ); text-shadow: 0px 0px 0px rgba( 0, 0, 0, 0.23 ); background-color: rgba( 49, 91, 124, 1.00 ) } 
+
+/* Popup Theme 20382: Hello Box */
+.pum-theme-20382, .pum-theme-hello-box { background-color: rgba( 0, 0, 0, 0.75 ) } 
+.pum-theme-20382 .pum-container, .pum-theme-hello-box .pum-container { padding: 30px; border-radius: 80px; border: 14px solid #81d742; box-shadow: 0px 0px 0px 0px rgba( 2, 2, 2, 0.00 ); background-color: rgba( 255, 255, 255, 1.00 ) } 
+.pum-theme-20382 .pum-title, .pum-theme-hello-box .pum-title { color: #2d2d2d; text-align: left; text-shadow: 0px 0px 0px rgba( 2, 2, 2, 0.23 ); font-family: Montserrat; font-weight: 100; font-size: 32px; line-height: 36px } 
+.pum-theme-20382 .pum-content, .pum-theme-hello-box .pum-content { color: #2d2d2d; font-family: inherit; font-weight: 100 } 
+.pum-theme-20382 .pum-content + .pum-close, .pum-theme-hello-box .pum-content + .pum-close { position: absolute; height: auto; width: auto; left: auto; right: -30px; bottom: auto; top: -30px; padding: 0px; color: #2d2d2d; font-family: Times New Roman; font-weight: 100; font-size: 32px; line-height: 28px; border: 1px none #ffffff; border-radius: 28px; box-shadow: 0px 0px 0px 0px rgba( 2, 2, 2, 0.23 ); text-shadow: 0px 0px 0px rgba( 0, 0, 0, 0.23 ); background-color: rgba( 255, 255, 255, 1.00 ) } 
+
+/* Popup Theme 20383: Cutting Edge */
+.pum-theme-20383, .pum-theme-cutting-edge { background-color: rgba( 0, 0, 0, 0.50 ) } 
+.pum-theme-20383 .pum-container, .pum-theme-cutting-edge .pum-container { padding: 18px; border-radius: 0px; border: 1px none #000000; box-shadow: 0px 10px 25px 0px rgba( 2, 2, 2, 0.50 ); background-color: rgba( 30, 115, 190, 1.00 ) } 
+.pum-theme-20383 .pum-title, .pum-theme-cutting-edge .pum-title { color: #ffffff; text-align: left; text-shadow: 0px 0px 0px rgba( 2, 2, 2, 0.23 ); font-family: Sans-Serif; font-weight: 100; font-size: 26px; line-height: 28px } 
+.pum-theme-20383 .pum-content, .pum-theme-cutting-edge .pum-content { color: #ffffff; font-family: inherit; font-weight: 100 } 
+.pum-theme-20383 .pum-content + .pum-close, .pum-theme-cutting-edge .pum-content + .pum-close { position: absolute; height: 24px; width: 24px; left: auto; right: 0px; bottom: auto; top: 0px; padding: 0px; color: #1e73be; font-family: Times New Roman; font-weight: 100; font-size: 32px; line-height: 24px; border: 1px none #ffffff; border-radius: 0px; box-shadow: -1px 1px 1px 0px rgba( 2, 2, 2, 0.10 ); text-shadow: -1px 1px 1px rgba( 0, 0, 0, 0.10 ); background-color: rgba( 238, 238, 34, 1.00 ) } 
+
+/* Popup Theme 20384: Framed Border */
+.pum-theme-20384, .pum-theme-framed-border { background-color: rgba( 255, 255, 255, 0.50 ) } 
+.pum-theme-20384 .pum-container, .pum-theme-framed-border .pum-container { padding: 18px; border-radius: 0px; border: 20px outset #dd3333; box-shadow: 1px 1px 3px 0px rgba( 2, 2, 2, 0.97 ) inset; background-color: rgba( 255, 251, 239, 1.00 ) } 
+.pum-theme-20384 .pum-title, .pum-theme-framed-border .pum-title { color: #000000; text-align: left; text-shadow: 0px 0px 0px rgba( 2, 2, 2, 0.23 ); font-family: inherit; font-weight: 100; font-size: 32px; line-height: 36px } 
+.pum-theme-20384 .pum-content, .pum-theme-framed-border .pum-content { color: #2d2d2d; font-family: inherit; font-weight: 100 } 
+.pum-theme-20384 .pum-content + .pum-close, .pum-theme-framed-border .pum-content + .pum-close { position: absolute; height: 20px; width: 20px; left: auto; right: -20px; bottom: auto; top: -20px; padding: 0px; color: #ffffff; font-family: Tahoma; font-weight: 700; font-size: 16px; line-height: 18px; border: 1px none #ffffff; border-radius: 0px; box-shadow: 0px 0px 0px 0px rgba( 2, 2, 2, 0.23 ); text-shadow: 0px 0px 0px rgba( 0, 0, 0, 0.23 ); background-color: rgba( 0, 0, 0, 0.55 ) } 
+
+/* Popup Theme 20385: Floating Bar - Soft Blue */
+.pum-theme-20385, .pum-theme-floating-bar { background-color: rgba( 255, 255, 255, 0.00 ) } 
+.pum-theme-20385 .pum-container, .pum-theme-floating-bar .pum-container { padding: 8px; border-radius: 0px; border: 1px none #000000; box-shadow: 1px 1px 3px 0px rgba( 2, 2, 2, 0.23 ); background-color: rgba( 238, 246, 252, 1.00 ) } 
+.pum-theme-20385 .pum-title, .pum-theme-floating-bar .pum-title { color: #505050; text-align: left; text-shadow: 0px 0px 0px rgba( 2, 2, 2, 0.23 ); font-family: inherit; font-weight: 400; font-size: 32px; line-height: 36px } 
+.pum-theme-20385 .pum-content, .pum-theme-floating-bar .pum-content { color: #505050; font-family: inherit; font-weight: 400 } 
+.pum-theme-20385 .pum-content + .pum-close, .pum-theme-floating-bar .pum-content + .pum-close { position: absolute; height: 18px; width: 18px; left: auto; right: 5px; bottom: auto; top: 50%; padding: 0px; color: #505050; font-family: Sans-Serif; font-weight: 700; font-size: 15px; line-height: 18px; border: 1px solid #505050; border-radius: 15px; box-shadow: 0px 0px 0px 0px rgba( 2, 2, 2, 0.00 ); text-shadow: 0px 0px 0px rgba( 0, 0, 0, 0.00 ); background-color: rgba( 255, 255, 255, 0.00 ); transform: translate(0, -50%) } 
+
+/* Popup Theme 20386: Content Only - For use with page builders or block editor */
+.pum-theme-20386, .pum-theme-content-only { background-color: rgba( 0, 0, 0, 0.70 ) } 
+.pum-theme-20386 .pum-container, .pum-theme-content-only .pum-container { padding: 0px; border-radius: 0px; border: 1px none #000000; box-shadow: 0px 0px 0px 0px rgba( 2, 2, 2, 0.00 ) } 
+.pum-theme-20386 .pum-title, .pum-theme-content-only .pum-title { color: #000000; text-align: left; text-shadow: 0px 0px 0px rgba( 2, 2, 2, 0.23 ); font-family: inherit; font-weight: 400; font-size: 32px; line-height: 36px } 
+.pum-theme-20386 .pum-content, .pum-theme-content-only .pum-content { color: #8c8c8c; font-family: inherit; font-weight: 400 } 
+.pum-theme-20386 .pum-content + .pum-close, .pum-theme-content-only .pum-content + .pum-close { position: absolute; height: 18px; width: 18px; left: auto; right: 7px; bottom: auto; top: 7px; padding: 0px; color: #000000; font-family: inherit; font-weight: 700; font-size: 20px; line-height: 20px; border: 1px none #ffffff; border-radius: 15px; box-shadow: 0px 0px 0px 0px rgba( 2, 2, 2, 0.00 ); text-shadow: 0px 0px 0px rgba( 0, 0, 0, 0.00 ); background-color: rgba( 255, 255, 255, 0.00 ) } 
+
+#pum-20387 {z-index: 1999999999}
+#pum-20388 {z-index: 1999999999}
+
+</style>
+<link rel='stylesheet' id='addtoany-css'  href='https://computerhistory.org/wp-content/plugins/add-to-any/addtoany.min.css?ver=1.16' type='text/css' media='all' />
+<style id='addtoany-inline-css' type='text/css'>
+.a2a_floating_style {
+	position: relative !important;
+	top: 0 !important;
+	margin-left: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='popup-css'  href='https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.css?ver=1' type='text/css' media='all' />
+<script type='text/javascript'>
+window.a2a_config=window.a2a_config||{};a2a_config.callbacks=[];a2a_config.overlays=[];a2a_config.templates={};
+</script>
+<script type='text/javascript' async src='https://static.addtoany.com/menu/page.js'></script>
+<script type='text/javascript' src='https://computerhistory.org/wp-content/themes/bsdstarter/src/js/vendor/jquery.js?ver=3.4.1'></script>
+<script type='text/javascript' async src='https://computerhistory.org/wp-content/plugins/add-to-any/addtoany.min.js?ver=1.1'></script>
+<script type='text/javascript' src='https://addevent.com/libs/atc/1.6.1/atc.min.js?ver=1'></script>
+<link rel='https://api.w.org/' href='https://computerhistory.org/wp-json/' />
+<link rel='shortlink' href='https://computerhistory.org/?p=4257' />
+<link rel="alternate" type="application/json+oembed" href="https://computerhistory.org/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fcomputerhistory.org%2Fblog%2Fthe-eudora-email-client-source-code%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://computerhistory.org/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fcomputerhistory.org%2Fblog%2Fthe-eudora-email-client-source-code%2F&#038;format=xml" />
+		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+				<style type="text/css" id="wp-custom-css">
+			.pum-content .wpcf7 form div.wpcf7-mail-sent-ok {
+	font-size: 21px;
+	font-weight: 600;
+}
+
+.pum-content p:not(:last-child) {
+	margin-bottom: 20px;
+}
+
+@media only screen and (min-width: 1024px) {
+#popmake-20388{
+    -webkit-transform: scale(0.8);
+       -moz-transform: scale(0.8);
+            transform: scale(0.8);
+	position: absolute; 
+  left: 50%!important;
+}
+}
+
+@media only screen and (min-width: 600px) and (max-width: 1023px) {
+#popmake-20388 {
+    -webkit-transform: scale(0.8);
+       -moz-transform: scale(0.8);
+            transform: scale(0.8);
+	position: absolute; 
+  left: 10%!important;
+}
+}
+
+.supporters .supporter__column.featured:first-child {
+	margin-top: 29px!important;
+}
+
+.wysiwyg table, th, td {
+	/*border: 1px solid black; */
+}
+
+.article-header {
+	position: relative;
+    z-index: -10;
+}		</style>
+		
+
+    <script type="text/javascript">
+        var MTUserId = '1c75c36c-a46a-4891-8bfa-e317e4c2df90';
+        var MTFontIds = new Array();
+
+        MTFontIds.push("1475724"); // DIN 1451 W01 EngSchrift 
+        (function () {
+            var mtTracking = document.createElement('script');
+            mtTracking.type = 'text/javascript';
+            mtTracking.async = 'true';
+            mtTracking.src = '/wp-content/themes/bsdstarter/src/fonts/mtiFontTrackingCode.js';
+
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(mtTracking);
+        })();
+    </script>
+
+    <script src="/wp-content/themes/bsdstarter/src/js/vendor/mediaelement-and-player.min.js'"></script>
+
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-MLN7JPS');</script>
+    <!-- End Google Tag Manager --></head>
+
+<body class="post-template-default single single-post postid-4257 single-format-standard" data-template="base.twig">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MLN7JPS"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+    
+<header>
+  <div class="nav-wrapper">
+    <div class="container">
+      <div class="nav-section-top">
+        <div class="logo">
+          <a class="logo" href="https://computerhistory.org">
+                        <img class="full-logo" src="https://computerhistory.org/wp-content/themes/bsdstarter/assets/img/chm-logo-text.svg" alt="">
+            <img class="teaser-logo" src="https://computerhistory.org/wp-content/themes/bsdstarter/assets/img/chm-logo-short.svg"
+              alt="">
+          </a>
+        </div>
+        <div class="right-content">
+          <button class="mobile-search search-icon mobile" aria-role="button">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+              xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 512 512">
+              <g>
+                <path
+                  d="M495,466.2L377.2,348.4c29.2-35.6,46.8-81.2,46.8-130.9C424,103.5,331.5,11,217.5,11C103.4,11,11,103.5,11,217.5   S103.4,424,217.5,424c49.7,0,95.2-17.5,130.8-46.7L466.1,495c8,8,20.9,8,28.9,0C503,487.1,503,474.1,495,466.2z M217.5,382.9   C126.2,382.9,52,308.7,52,217.5S126.2,52,217.5,52C308.7,52,383,126.3,383,217.5S308.7,382.9,217.5,382.9z" />
+              </g>
+            </svg>
+          </button>
+          <button class="mobile-menu-toggle" aria-role="button">
+            <span>Menu</span>
+          </button>
+        </div>
+      </div>
+      <div class="nav-section-bottom">
+        <div class="nav-section-bottom-menu">
+          <ul class="menu vertical large-horizontal bottom-menu" data-responsive-menu="drilldown large-dropdown">
+                        <li>
+              <a href="/explore/">Explore</a>
+                            <ul class="nested menu submenu vertical">
+                                                <li><a href="https://computerhistory.org/explore/">Overview</a></li>
+                                <li><a href="/stories/">Stories</a></li>
+                                <li><a href="https://computerhistory.org/timelines/">Timelines</a></li>
+                                <li><a href="/collections/">Collections</a></li>
+                                <li><a href="/playlists/">Playlists</a></li>
+                                <li><a href="https://computerhistory.org/blogs/">Blogs</a></li>
+                                <li><a href="https://computerhistory.org/publications/">Publications</a></li>
+                              </ul> <!-- /.menu.nested -->
+                          </li>
+                        <li>
+              <a href="/connect/">Connect</a>
+                            <ul class="nested menu submenu vertical">
+                                                <li><a href="/connect/">Overview</a></li>
+                                <li><a href="/events/">Events</a></li>
+                                <li><a href="https://computerhistory.org/k-12-students-educators/">K-12 Students &#038; Educators</a></li>
+                                <li><a href="https://computerhistory.org/families-community-groups/">Families &#038; Community Groups</a></li>
+                                <li><a href="https://computerhistory.org/colleges-universities/">Colleges &#038; Universities</a></li>
+                                <li><a href="https://computerhistory.org/business-government-leaders/">Business &#038; Government Leaders</a></li>
+                                <li><a href="https://computerhistory.org/volunteers/">Volunteers</a></li>
+                              </ul> <!-- /.menu.nested -->
+                          </li>
+                        <li>
+              <a href="/visit/">Visit</a>
+                            <ul class="nested menu submenu vertical">
+                                                <li><a href="/visit/">Overview</a></li>
+                                <li><a href="https://computerhistory.org/plan-your-visit/">Plan Your Visit</a></li>
+                                <li><a href="https://computerhistory.org/exhibits/">Exhibits</a></li>
+                                <li><a href="https://computerhistory.org/tours/">Public Tours &#038; Group Reservations</a></li>
+                                <li><a href="https://computerhistory.org/customize-it/">Customize It</a></li>
+                                <li><a href="https://computerhistory.org/venue/">Venue</a></li>
+                              </ul> <!-- /.menu.nested -->
+                          </li>
+                        <li>
+              <a href="/about/">About</a>
+                            <ul class="nested menu submenu vertical">
+                                                <li><a href="/about/">Overview</a></li>
+                                <li><a href="https://computerhistory.org/this-is-chm/">This Is CHM</a></li>
+                                <li><a href="https://computerhistory.org/centers/">Centers</a></li>
+                                <li><a href="https://computerhistory.org/programs/">Programs</a></li>
+                                <li><a href="/press-releases">News</a></li>
+                                <li><a href="https://computerhistory.org/leadership/">Leadership</a></li>
+                              </ul> <!-- /.menu.nested -->
+                          </li>
+                        <li>
+              <a href="/join/">Join & Give</a>
+                            <ul class="nested menu submenu vertical">
+                                                <li><a href="/join/">Overview</a></li>
+                                <li><a href="https://computerhistory.org/ways-to-give/">Ways to Give</a></li>
+                                <li><a href="https://computerhistory.org/donor-recognition/">Donor Recognition</a></li>
+                                <li><a href="https://computerhistory.org/institutional-partnerships/">Institutional Partnerships</a></li>
+                              </ul> <!-- /.menu.nested -->
+                          </li>
+                        <li class="search-icon desktop">
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 512 512">
+                <g>
+                  <path
+                    d="M495,466.2L377.2,348.4c29.2-35.6,46.8-81.2,46.8-130.9C424,103.5,331.5,11,217.5,11C103.4,11,11,103.5,11,217.5   S103.4,424,217.5,424c49.7,0,95.2-17.5,130.8-46.7L466.1,495c8,8,20.9,8,28.9,0C503,487.1,503,474.1,495,466.2z M217.5,382.9   C126.2,382.9,52,308.7,52,217.5S126.2,52,217.5,52C308.7,52,383,126.3,383,217.5S308.7,382.9,217.5,382.9z" />
+                </g>
+              </svg>
+            </li>
+          </ul> <!-- /.menu -->
+        </div>
+        <div class="nav-section-top-menu">
+          <ul class="menu vertical large-horizontal top-menu" data-responsive-menu="drilldown large-dropdown">
+                        <li>
+              <a href="https://buy.acmeticketing.com/orders/499/calendar?eventId=60e4a7ff871ad95afdc104cb&cart">Buy Tickets</a>
+                          </li>
+                        <li>
+              <a href="https://computerhistory.org/donate-now/">Donate</a>
+                          </li>
+                        <li>
+              <a href="https://computerhistory.org/hours-admission/">Hours &#038; Admission</a>
+                          </li>
+                        <li>
+              <a href="https://computerhistory.org/subscribe/">Subscribe</a>
+                          </li>
+                        <li>
+              <a href="/events/">Upcoming Events</a>
+                          </li>
+                      </ul> <!-- /.menu -->
+        </div>
+      </div>
+    </div>
+    <div class="search-wrapper">
+      <div class="container">
+        <form role="search" method="get" id="searchform" class="searchform" action="https://computerhistory.org/">
+				<div>
+					<label class="screen-reader-text" for="s">Search for:</label>
+					<input type="text" value="" name="s" id="s" />
+					<input type="submit" id="searchsubmit" value="Go" />
+				</div>
+			</form>
+        <a href="https://www.computerhistory.org/collections/search/" class="search-text">Or search the collection catalog
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10" height="7"
+            viewBox="0 0 10 7">
+            <defs>
+              <path id="ehgga" d="M464.07 207.98h8.498v1.042h-8.498z" />
+              <path id="ehggb" d="M470.208 211.99l-.768-.73 2.906-2.76-2.906-2.76.768-.73 3.673 3.49z" />
+            </defs>
+            <g>
+              <g transform="translate(-464 -205)">
+                <g>
+                  <use fill="#175e61" xlink:href="#ehgga" />
+                </g>
+                <g>
+                  <use fill="#175e61" xlink:href="#ehggb" />
+                </g>
+              </g>
+            </g>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  </header>  
+  
+
+
+
+  
+<!-- c-post-hero -->
+<section class="hero hero--with-image">
+        <div class="container">
+      <div class="hero__wrapper">
+                  <div class="hero__img-holder">
+            <div class="hero__img" style="background-image: url('https://computerhistory.org/wp-content/uploads/2019/07/Eudora_splash.jpg');"></div>
+          </div>
+        
+        <div class="hero__content">
+          <div class="content">
+            <h5>Chm Blog
+                              <a href="https://computerhistory.org/blog/category/from-the-collection/"><span>From the Collection</span></a>
+                                        </h5>
+
+            <h1>The Eudora™ Email Client Source Code</h1>
+
+                                          <h4>By <a class="author-link" href="https://computerhistory.org/profile/leonard-j-shustek/">Leonard J. Shustek</a> |
+                May 22, 2018</h4>
+                                    </div>
+
+                      <div class="hero__pattern">
+              <img src="https://computerhistory.org/wp-content/themes/bsdstarter/assets/img/basic-page-core-memory.svg" alt="">
+            </div>
+                  </div>
+      </div>
+    </div>
+    </section>
+<div class="container">
+
+  
+  <div class="three-column-grid">
+    <div class="row">
+      <div class="three-column-grid__left">
+        <div class="social-share share-widget-icons">
+          <h2>Share</h2>
+                      <div class="addtoany_shortcode"><div class="a2a_kit a2a_kit_size_ addtoany_list" data-a2a-url="https://computerhistory.org/blog/the-eudora-email-client-source-code/" data-a2a-title="The Eudora™ Email Client Source Code"><a class="a2a_button_facebook" href="https://www.addtoany.com/add_to/facebook?linkurl=https%3A%2F%2Fcomputerhistory.org%2Fblog%2Fthe-eudora-email-client-source-code%2F&amp;linkname=The%20Eudora%E2%84%A2%20Email%20Client%20Source%20Code" title="Facebook" rel="nofollow noopener" target="_blank"><img src="/wp-content/themes/bsdstarter/assets/img/share_icons/facebook.png" width="32" alt="Facebook"></a><a class="a2a_button_twitter" href="https://www.addtoany.com/add_to/twitter?linkurl=https%3A%2F%2Fcomputerhistory.org%2Fblog%2Fthe-eudora-email-client-source-code%2F&amp;linkname=The%20Eudora%E2%84%A2%20Email%20Client%20Source%20Code" title="Twitter" rel="nofollow noopener" target="_blank"><img src="/wp-content/themes/bsdstarter/assets/img/share_icons/twitter.png" width="32" alt="Twitter"></a><a class="a2a_button_copy_link" href="https://www.addtoany.com/add_to/copy_link?linkurl=https%3A%2F%2Fcomputerhistory.org%2Fblog%2Fthe-eudora-email-client-source-code%2F&amp;linkname=The%20Eudora%E2%84%A2%20Email%20Client%20Source%20Code" title="Copy Link" rel="nofollow noopener" target="_blank"><img src="/wp-content/themes/bsdstarter/assets/img/share_icons/link.png" width="32" alt="Copy Link"></a></div></div>
+                  </div>
+      </div>
+
+      <div class="three-column-grid__center">
+        
+        <div class="wysiwyg">
+	<p>Software Gems: The Computer History Museum Historical Source Code Series</p>
+<p><img class="alignnone size-full wp-image-4258 aligncenter" src="https://computerhistory.org/wp-content/uploads/2019/07/Eudora_splash.jpg" alt="" width="800" height="472" /></p>
+<p>Electronic mail is one of “killer apps” of networked computing. The ability to quickly send and receive messages without having to be online at the same time created a new form of human communication. By now billions of people have used email.</p>
+<p>Email has a long and storied history, dating back to MIT’s Compatible Time Sharing System (<a href="https://en.wikipedia.org/wiki/Compatible_Time-Sharing_System">CTSS</a>) and the US government’s <a href="https://en.wikipedia.org/wiki/Automatic_Digital_Network">AUTODIN</a> in the early 1960s. These early systems, which often used propriety communications networks and protocols, were generally incompatible with each other; you could only exchange mail with people using the same system.</p>
+<p>The first email on the ARPANET (the predecessor of today’s internet) was sent by <a href="https://en.wikipedia.org/wiki/Ray_Tomlinson">Ray Tomlinson</a> in 1971, and mail formats became standardized (<a href="https://tools.ietf.org/html/rfc524">RFC 524</a>, <a href="https://tools.ietf.org/html/rfc561">RFC 561</a>) soon thereafter. In the 1980s, the <a href="https://en.wikipedia.org/wiki/Post_Office_Protocol">Post Office Protocol</a> for TCP/IP codified the communication between email clients (which run on the user’s computer) and the email server (where messages are received from other systems and stored), so that there could be independent implementations of both on different computers and operating systems.</p>
+<p>Eventually many email clients were written for personal computers, but few became as successful as Eudora. Available both for the IBM PC and the Apple Macintosh, in its heyday Eudora had tens of millions of happy users. Eudora was elegant, fast, feature-rich, and could cope with mail repositories containing hundreds of thousands of messages. In my opinion it was the finest email client ever written, and it has yet to be surpassed.</p>
+<p>I still use it today, but, alas, the last version of Eudora was released in 2006. It may not be long for this world. With thanks to Qualcomm, we are pleased to release the Eudora source code for its historical interest, and with the faint hope that it might be resuscitated. I will muse more about that later.</p>
+<h2>How Eudora Came to Be</h2>
+<p>In the 1980s, Steve Dorner was working at the computer center at the University of Illinois at Urbana-Champaign.</p>
+<p><div class="video-wrapper"><div class="video-youtube-embed"><iframe src="//www.youtube.com/embed/vF9eUrzzNww" frameborder="0" allowfullscreen></iframe></div><p class="video-caption">vF9eUrzzNww</p></div></p>
+<div class="atchm-meta">
+<p>“I started Eudora in 1988, at the University of Illinois, about four years before I came to Qualcomm. We began it because the internet was a growing and burgeoning place, but email was not really established on the desktop computers that people were using at the time. It was something that you logged in to some mainframe computer to do, and with the ease of use that the desktop operating systems brought, that just wasn’t the right way for people to do email anymore.”</p>
+</div>
+<p>It took Dorner just over a year to create the first version of Eudora, which had 50,000 lines of C code and ran only on the Apple Macintosh. Like many university-produced programs, it was available to anyone for free.</p>
+<p>Why did he call it Eudora? Dorner explained for a 1997 article in the <a href="http://www.nytimes.com/library/cyber/week/012197eudora.html">New York Times CyberTimes</a> that it was because of a short story he had read in college: “<a href="https://en.wikipedia.org/wiki/Why_I_Live_at_the_P.O.">Why I Live at the P.O</a>,” by Mississippi writer Eudora Welty. Working intently on an email program, Dorner said “I felt like I lived at the post office.”</p>
+<p>In 1991, Qualcomm, a communications company in San Diego famous for CDMA cellular communications technology, licensed Eudora from the University of Illinois. Dorner was eventually hired by them to continue to develop it, working remotely from his home in Illinois.</p>
+<p>Qualcomm’s motivations were several. They knew that the internet would fuel the need for wireless data, and they thought that email would be one of the drivers. They also thought it prudent to diversify beyond ICs for wireless technology into software applications.</p>
+<p><img class="alignnone size-full wp-image-14523 aligncenter" src="https://computerhistory.org/wp-content/uploads/2019/12/EudoraLicensePlate_sm.jpg" alt="" width="800" height="399" /></p>
+<p>But Eudora as a Mac-only product wouldn’t cut it. Qualcomm project manager John Noerenberg assigned Jeff Beckley and Jeff Gehlhaar in San Diego the task of making an MS-DOS and then a Windows version of the program. “The style of the company was to put an MS-DOS or Macintosh computer on each employee’s desk—whichever most suited their needs and their personal preference,” he said. “We required email software that was internet-savvy, and platform agnostic. There wasn’t anything commercially available that satisfied either of those goals, much less both.”</p>
+<p>Initially Eudora was only used internally at Qualcomm. It was well-received. Noerenberg heard one financial executive at Qualcomm saying, “I used to hate email. But I love Eudora!!” and observed, “It was at that moment I realized we were on to something.”</p>
+<p>The company later said, “As a leader in developing and delivering digital communications, Qualcomm recognized email as an important communications tool for the future,” and they released it as a consumer product in 1993. The Eudora team at Qualcomm expanded quickly from the initial four to a moderately large product group, and at its peak was over 50 people.</p>
+<h2>The Rise of Eudora</h2>
+<p>The Qualcomm version of Eudora was originally available for free, and it quickly gained in popularity. To get a feel for the user community, Beckley called it “postcard-ware” and asked people to send him a postcard if they liked it. “I got thousands of postcards from all over the world. . . . There was this great feeling about the software, and everybody really loved it.”</p>
+<p>“But,” Noerenberg recalls, “postcards don’t pay the bills.” He faced management pressure to stop spending money on a free product. “In 1993 I hatched the idea that if we could somehow convince Qualcomm there was money in an internet software business, we could turn this into a product and we’d get to keep doing what we loved.”</p>
+<p>Eudora was soon commercialized as a paid version for $19.95. There was still a free version, now supported by advertisements. By 2001, over 100 person-years of development had been invested in the Windows and Macintosh versions. The paid version eventually sold for as much as $65, and it was aggressively marketed by Qualcomm.</p>
+<p><img class="alignnone size-large wp-image-22685 aligncenter" src="https://computerhistory.org/wp-content/uploads/2018/05/Internet_World_1995_4Apr_V06N04_0134-777x1024.jpg" alt="" width="777" height="1024" /> <img class="alignnone size-large wp-image-22686 aligncenter" src="https://computerhistory.org/wp-content/uploads/2018/05/Eudora2Ad-736x1024.jpg" alt="" width="736" height="1024" /> <img class="alignnone size-large wp-image-22687 aligncenter" src="https://computerhistory.org/wp-content/uploads/2018/05/qualcomm-eudora-email-software-self-mailer1.jpg" alt="" width="800" height="543" /><img class="size-full wp-image-22688 aligncenter" src="https://computerhistory.org/wp-content/uploads/2018/05/Infoworld-1995-01-30_p80.jpg" alt="" width="800" height="519" /></p>
+<h2>The Demise of Eudora</h2>
+<p>After 15 years, Qualcomm decided in 2006 that Eudora was no longer consistent with their other major project lines, and they stopped development. A likely factor was the increasing adoption of Microsoft Outlook as an email client for corporations. Outlook was preloaded for free on many PCs, and companies often standardized on it along with the rest of the Microsoft suite of office productivity products. Other free email clients were also available. So regardless of how successful Eudora was, it was never going to be a business big enough to “move the needle” for a company of Qualcomm’s size.</p>
+<p>The last Qualcomm versions of Eudora, 7.1.0.9 for Windows and 6.2.4 for Macintosh, were released on October 11, 2006.</p>
+<p>To provide a “soft landing” for the millions of Eudora users, Qualcomm generously sponsored the creation of a new compatible open-source version based on Mozilla Thunderbird. For some time they paid the salaries of the programmers working on it, which included Steve Dorner, Jeff Beckley, Dale Wiggins, Geoff Wenger, Matt Dudziak, and Mark Charlebois.</p>
+<p>A beta of the new version 8.0 was released in August 2007. But it was panned by the Eudora faithful, in part because it had both a different look and feel and an incompatible mailbox data format. The production version 1.0 of what was renamed “Eudora OSE” (Open Source Edition) was released in September 2010, but fared no better.</p>
+<p>Jeff Beckley mused that “Classic Eudora had many years of very detailed design and implementation in it. There are a lot of little things that go on behind the scenes, or at least very subtly visible to the user. Users come to depend on those subtle interactions, and, when they aren’t there, it just feels different.”</p>
+<p>After a few more years of intermittent work, the project for an open-source Eudora collapsed.</p>
+<p>The last Qualcomm Windows version of Eudora continues, with some glitches, to work well under Windows 10. The Apple Macintosh version, unfortunately, did not survive the transition to the modern Mac processors and operating systems, and can now only run using emulators.</p>
+<h2>Eudora’s Legacy</h2>
+<p>It’s hard to overstate Eudora’s popularity in the mid-1990s. The April 22, 1996 InfoWorld article announcing the release of Eudora Pro 2.0 called it Qualcomm’s “best-selling product,” and said that “according to International Data Corp. (IDC), Qualcomm claimed 64.7 percent of all e-mail software revenues in 1995.” A later exhibit about Eudora in Qualcomm’s company museum observed that “By 1996 Eudora had 18 million users, making it the world’s most widely used internet email software at the time.”</p>
+<p>Even though it has mostly faded away, Eudora had a lasting impact. As Dorner says, “It had a great effect on how people do email even today. There are concepts that we introduced, which we were the first to do, that are now a standard part of any email client out there.”</p>
+<h2>The Eudora Source Code</h2>
+<p>The discussion with Qualcomm for the release of the Eudora source code by the museum took five years. In the end, they decided not to simply grant a license, but to transfer ownership of the code, the Eudora trademarks, the copyrights, and the Eudora domain names to the Computer History Museum (CHM). The transfer agreement allows us to publish the code under the very liberal BSD open source license, which means that anyone can use it for either personal or commercial purposes.</p>
+<p>The source code we are distributing is what we received from Qualcomm, with only the following changes:</p>
+<ul class="chm-bulletlist alternation">
+	<li>addition of the CHM copyright notice and the BSD license</li>
+	<li>sanitization of “bad words”, mostly in comments, as requested by Qualcomm</li>
+	<li>removal of third-party software that neither the museum nor Qualcomm has the right to distribute</li>
+</ul>
+<p>The Windows version of Eudora is written in C++. The source tree consists of 8,651 files in 565 folders, taking up 458 MB. There are both production (“Eudora71”) and test (“Sandbox”) versions of the code.</p>
+<p>The Macintosh version of Eudora is an entirely different code base and is written in C. The source tree consists of 1,433 files in 47 folders, taking up 69.9 MB.</p>
+<p class="alert alert-warning" style="text-align: center;"><a href="/blog/the-eudora-email-client-source-code-license-agreement/">View License Agreement and Download Source Code</a></p>
+<p>The license for the code allows you to use the code for free, with or without modifications, for personal or commercial use, as long as the copyright notices, the list of conditions, and the disclaimers are retained in the code. The license does NOT allow you to use any of the trademarks or domain names related to Eudora, including Eudora™, www.eudora.com, and www.eudora.org.</p>
+<h2>Reviving the Windows Version of Eudora</h2>
+<p>Although Eudora became unsupported as of 2006, some of us are in denial and still use it as our primary email client. I have over 350,000 archived messages in the Windows Eudora format going back to 1997, along with 28,000 embedded images and 33,000 saved attachments. I run it with only minor problems under Windows 10.</p>
+<p>I know of no other email client that can manage repositories that large and search them so quickly. I spend hours each day using Eudora to read and send email. I can do a complex search for anything in the 20 years of archived email in under a minute. It will be a sad day when I have to give it up.</p>
+<p>Are there others like me? We have no way of knowing how large the community of current Eudora users is. If you would like to contribute to a short informal poll about your current and past Eudora usage, please fill out the survey <a href="https://www.surveymonkey.com/r/eudora-poll1">here</a>.</p>
+<p style="text-align: center;"><strong><a href="https://www.surveymonkey.com/r/eudora-poll1">Are you a Eudora user, past or present? Participate in our survey!</a></strong></p>
+<p>[Flash: see the section at the end for preliminary survey results.]</p>
+<p>I do hope that someone, or some group, or some company, will adopt the Windows Eudora source code and revive it as a supported program. The Computer History Museum cannot do that. Only the Eudora fan base can.</p>
+<p>It won’t be easy. The tasks in reviving the Windows version include replacing several third-party libraries for isolated tasks, like spell-checking. The HTML rendering engine should be replaced with something more modern. The handling of Unicode and other special character encoding needs to be improved.</p>
+<p>Also, the Windows version uses a Qualcomm-modified version of RogueWave Software’s Stingray package of extensions to MFC, the Microsoft Foundation Class library for C++. After more than three years of discussion, we finally secured an agreement with RogueWave, giving us permission to distribute a binary linkable library compiled from the 20-year-old source code, but only for noncommercial use. That library is not currently part of this release, but we will build and distribute it if there is credible interest in rebuilding a noncommercial Windows version of Eudora. But it will take some effort to make the changes to the RogueWave source code necessary to compile it in a modern development environment, and we could use help in doing that.</p>
+<h2>Reviving the Macintosh Version of Eudora</h2>
+<p>The Macintosh version, because it is based on an older processor and operating system, would be harder to resuscitate. It would have to be substantially rewritten for the current Mac environment. But not much is beyond the capability of motivated and clever programmers. Have at it.</p>
+<p>Long live Eudora!</p>
+<h3>Acknowledgements</h3>
+<ul class="chm-bulletlist alternation">
+	<li>Thanks to Qualcomm, Wintertree, and RogueWave their various permissions.</li>
+	<li>Thanks to Grady Booch, Steve Jasik, and Jennifer Stanley of Fenwick &amp; West for their help.</li>
+	<li>Thanks to Steve Dorner, Jeff Beckley, and John Noerenberg for their encouragement and participation in this multiyear odyssey to release the code, and for creating Eudora in the first place. You should be very proud of what you did.</li>
+</ul>
+<h3>Preliminary survey results</h3>
+<p>We received about a thousand survey entries in the first two weeks. Here are some highlights:</p>
+<ul class="chm-bulletlist alternation">
+	<li>40% of respondents (401) are using Eudora now; 85% Windows and 21% Mac. (So 6% use both?)</li>
+	<li>Most are long-time users: 10-20 years or more</li>
+	<li>Many users have huge archives: “tens of thousands”, “over 300,000″, “billions” (?!)</li>
+	<li>Only 6% are experienced and interested C++ programmers (2/3 Windows, 1/3 Mac)</li>
+	<li>About 95% of responders (not surprisingly) used Eudora at one time, about 50/50 Windows vs Mac</li>
+	<li>The reason for stopping to use it vary widely: not supported, won’t run on MacOS X, problems with Gmail, HTML issues, character set issues, company uses Outlook, lack of security, webmail is more portable, wanted Linux version, Apple mail got better, it began to feel dated.</li>
+	<li>The requested changes are mostly fixes or evolutionary improvements: modern OS support, HTML, character sets, SSL certificate handling, new header handling, links to attachments, archiving of embedded images, encrypted email, calendar integration</li>
+	<li>The majority of responders are in the US, but we also had responses from an amazing 36 different countries: Canada, England, Scotland, Japan, Italy, Switzerland, Portugal, Malaysia, Germany, Thailand, Australia, Finland, Israel, The Netherlands, Belgium, Argentina, Hong Kong, Greece, Mexico, Cuba, Norway, South Africa, Lithuania, Spain, Russia, Sweden, Colombia, Denmark, New Zealand, Czech Republic, Chile, Nicaragua, Hungary, Croatia, Romania, Indonesia</li>
+</ul>
+<p>There were many exuberant comments about using Eudora; here are a few samples:</p>
+<ul class="chm-bulletlist alternation">
+	<li>It was, and always has been my favorite e-mail client. I would use it in a heartbeat, if it were to come back to life!</li>
+	<li>PLEASE, I want the old Eudora back…</li>
+	<li>An awesome email client</li>
+	<li>I loved Eudora for nearly 15 years, and would love to see it reincarnated. Today’s email clients are still inferior in comparison</li>
+	<li>Eudora’s one of the very few bits of software I use every single day.</li>
+	<li>There is nothing to be changed. It is the best software EVER, EVER, EVER. I don’t need the crap about groups and social media associations and other high tech sharing stuff. I want Eudora the way it has always been and especially the ability to look up an email from 1999 in 2 seconds with part of a keyword!</li>
+	<li>This is a very old love affair with Eudora.</li>
+	<li>I loved Eudora</li>
+	<li>I haven’t used it in a number of years, but can’t think of anything I’d change.</li>
+	<li>It’s basically perfect.</li>
+	<li>Don’t know how to improve upon an already amazing program that I dearly wish was still available.</li>
+	<li>I just would be happy if it continued to work as I knew it in the past!</li>
+	<li>It’s what it had that I miss that bothers me, not what it didn’t have that I wanted.</li>
+</ul>
+<h2>Historical Source Code Releases</h2>
+<ul class="chm-bulletlist alternation">
+	<li><a href="/blog/macpaint-and-quickdraw-source-code">MacPaint and QuickDraw Source Code</a>, July 18, 2010</li>
+	<li><a href="/blog/the-apl-programming-language-source-code/">APL Programming Language Source Code</a>, October 10, 2012</li>
+	<li><a href="/blog/adobe-photoshop-source-code/">Adobe Photoshop Source Code</a>, February 13, 2013</li>
+	<li><a href="/blog/apple-ii-dos-source-code/">Apple II DOS Source Code</a>, November 12, 2013</li>
+	<li><a href="/blog/microsoft-ms-dos-early-source-code/">Microsoft MS-DOS Early Source Code</a>, March 25, 2014</li>
+	<li><a href="/blog/microsoft-word-for-windows-1-1a-source-code/">Microsoft Word for Windows Version 1.1a Source Code</a>, March 25, 2014</li>
+	<li><a href="/blog/early-digital-research-cpm-source-code/">Early Digital Research CP/M Source Code</a>, October 1, 2014</li>
+	<li><a href="/blog/xerox-alto-source-code/">Xerox Alto Source Code</a>, October 21, 2014</li>
+	<li><a href="/blog/electronic-arts-deluxepaint-early-source-code/">Electronic Arts DeluxePaint Early Source Code</a>, July 22, 2015</li>
+</ul>
+</div>                <!-- Author Block -->
+  <section class="author-block">
+    <h2>About The Author</h2>
+          <div class="section-wrapper">
+                  <div class="author__profile-img" style="background: url('https://computerhistory.org/wp-content/uploads/2019/07/shustek.jpg') center center no-repeat;">
+          </div>
+                <div class="author-block">
+                      <p>Len Shustek is the founding chairman emeritus of the board of trustees of the Computer History Museum.</p>
+                  </div>
+      </div>
+      </section>
+<!-- end Author Block -->        
+        <div class="disqus">
+          <div class="wysiwyg mb-none">
+            <h2>Join the Discussion</h2>
+          </div>
+          <div id="disqus_thread"></div>
+          <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            */
+            var disqus_config = function () {
+              this.page.url = "https://computerhistory.org/blog/the-eudora-email-client-source-code/";  // Replace PAGE_URL with your page's canonical url variable
+              this.page.identifier = "4257"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            (function () {  // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+
+              s.src = '//chm-website.disqus.com/embed.js';
+
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+              Disqus.</a></noscript>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  related articles -->
+<div class="container container--small">
+  <section class="related-articles">
+    <div class="related-articles__title-section">
+      <h2 class="related-articles__title">Related Articles</h2>
+      <a href="https://computerhistory.org/blogs" class="related-articles__link">View all articles</a>
+    </div>
+
+    <div class="row">
+                                    <div class="related-articles__column">
+        <a href="https://computerhistory.org/blog/margaret-hamilton-in-her-own-words/">
+          <div class="related-articles__img-wrapper">
+            <div class="related-articles__img" style="background: url('https://computerhistory.org/wp-content/uploads/2022/03/Margaret-Hamilton-Fellow-award-acceptance-310x175-c-default.jpg') center center no-repeat">
+            </div>
+          </div>
+          <div class="related-articles__content">
+            <h5>CHM BLOG</h5>
+            <h4>Margaret Hamilton In Her Own Words</h4>
+                        <time class="post-date" datetime="Marcw-relat019">March 10, 2022</time>
+                      </div>
+        </a>
+      </div>
+                                    <div class="related-articles__column">
+        <a href="https://computerhistory.org/blog/saving-thought-leadership/">
+          <div class="related-articles__img-wrapper">
+            <div class="related-articles__img" style="background: url('https://computerhistory.org/wp-content/uploads/2022/02/churchill-club-310x175-c-default.jpg') center center no-repeat">
+            </div>
+          </div>
+          <div class="related-articles__content">
+            <h5>CHM BLOG</h5>
+            <h4>Saving Thought Leadership</h4>
+                        <time class="post-date" datetime="Marcw-relat019">March 07, 2022</time>
+                      </div>
+        </a>
+      </div>
+                                    <div class="related-articles__column">
+        <a href="https://computerhistory.org/blog/meet-the-adams-brothers/">
+          <div class="related-articles__img-wrapper">
+            <div class="related-articles__img" style="background: url('https://computerhistory.org/wp-content/uploads/2021/11/William_Stephan_06212021_StCroix-e1635975226979-310x175-c-default.jpg') center center no-repeat">
+            </div>
+          </div>
+          <div class="related-articles__content">
+            <h5>CHM BLOG</h5>
+            <h4>Meet the Adams Brothers</h4>
+                        <time class="post-date" datetime="Marcw-relat019">November 09, 2021</time>
+                      </div>
+        </a>
+      </div>
+          </div>
+
+    <a href="https://computerhistory.org/blogs" class="related-articles__link mobile">View all articles</a>
+  </section>
+</div>
+
+
+      <div class="social-share__wrapper">
+      <div class="container social-share mobile">
+        <h2>Share</h2>
+                <div class="addtoany_shortcode"><div class="a2a_kit a2a_kit_size_ addtoany_list" data-a2a-url="https://computerhistory.org/blog/the-eudora-email-client-source-code/" data-a2a-title="The Eudora™ Email Client Source Code"><a class="a2a_button_facebook" href="https://www.addtoany.com/add_to/facebook?linkurl=https%3A%2F%2Fcomputerhistory.org%2Fblog%2Fthe-eudora-email-client-source-code%2F&amp;linkname=The%20Eudora%E2%84%A2%20Email%20Client%20Source%20Code" title="Facebook" rel="nofollow noopener" target="_blank"><img src="/wp-content/themes/bsdstarter/assets/img/share_icons/facebook.png" width="32" alt="Facebook"></a><a class="a2a_button_twitter" href="https://www.addtoany.com/add_to/twitter?linkurl=https%3A%2F%2Fcomputerhistory.org%2Fblog%2Fthe-eudora-email-client-source-code%2F&amp;linkname=The%20Eudora%E2%84%A2%20Email%20Client%20Source%20Code" title="Twitter" rel="nofollow noopener" target="_blank"><img src="/wp-content/themes/bsdstarter/assets/img/share_icons/twitter.png" width="32" alt="Twitter"></a><a class="a2a_button_copy_link" href="https://www.addtoany.com/add_to/copy_link?linkurl=https%3A%2F%2Fcomputerhistory.org%2Fblog%2Fthe-eudora-email-client-source-code%2F&amp;linkname=The%20Eudora%E2%84%A2%20Email%20Client%20Source%20Code" title="Copy Link" rel="nofollow noopener" target="_blank"><img src="/wp-content/themes/bsdstarter/assets/img/share_icons/link.png" width="32" alt="Copy Link"></a></div></div>
+              </div>
+    </div>
+  
+    
+  <footer class="footer">
+  <div class="footer__top">
+    <div class="container">
+      <div class="footer-content-5">
+        <h2 class="widgettitle">Hours and Directions</h2>
+			<div class="textwidget"><p><a href="/make-plan/">Hours &amp; Directions</a></p>
+<p>1401 N. Shoreline Blvd.</p>
+<p>Mountain View, CA 94043</p>
+<p><a href="tel:+16508101010">(650) 810-1010</a></p>
+<p>&nbsp;</p>
+<p><a href="/contact-us/">More Contact Info</a></p>
+</div>
+      </div>
+      <div class="footer-content-4">
+        <div class="menu_one">
+          <ul class="menu" data-responsive-menu="drilldown large-dropdown">
+                        <li>
+              <a href="/press-releases/">Press</a>
+                          </li>
+                        <li>
+              <a href="/jobs/">Careers</a>
+                          </li>
+                        <li>
+              <a href="https://computerhistory.org/venue/">Venue</a>
+                          </li>
+                      </ul>
+        </div>
+        <div class="menu_two">
+          <ul class="menu" data-responsive-menu="drilldown large-dropdown">
+                        <li>
+              <a href="/events/">Events</a>
+                          </li>
+                        <li>
+              <a href="/stories/">Stories</a>
+                          </li>
+                        <li>
+              <a href="https://computerhistory.org/donate-now/">Donate</a>
+                          </li>
+                      </ul> <!-- /.menu -->
+        </div>
+      </div>
+      <div class="footer-content-3">
+        <a class="logo" href="https://computerhistory.org"><img
+            src="https://computerhistory.org/wp-content/themes/bsdstarter/assets/img/chm-logo-short.svg" alt=""></a>
+
+        <div class="footer-term-conditions desktop">
+          <ul class="menu">
+                        <li class="">
+              <a href="https://computerhistory.org/terms/">Terms of Use</a>
+                          </li>
+                        <li class="">
+              <a href="https://computerhistory.org/privacy/">Privacy</a>
+                          </li>
+                        <li class="no-link">
+              <a href="#">© 2022 Computer History Museum</a>
+                          </li>
+                      </ul> <!-- /.menu -->
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+</footer>    <div id="pum-20388" class="pum pum-overlay pum-theme-20380 pum-theme-lightbox popmake-overlay auto_open click_open" data-popmake="{&quot;id&quot;:20388,&quot;slug&quot;:&quot;email-subscription&quot;,&quot;theme_id&quot;:20380,&quot;cookies&quot;:[{&quot;event&quot;:&quot;on_popup_close&quot;,&quot;settings&quot;:{&quot;name&quot;:&quot;pum-20388&quot;,&quot;key&quot;:&quot;&quot;,&quot;session&quot;:false,&quot;path&quot;:&quot;1&quot;,&quot;time&quot;:&quot;1 month&quot;}},{&quot;event&quot;:&quot;pum_sub_form_success&quot;,&quot;settings&quot;:{&quot;name&quot;:&quot;pum-20388&quot;,&quot;time&quot;:&quot;2 years&quot;,&quot;path&quot;:true}},{&quot;event&quot;:&quot;pum_sub_form_already_subscribed&quot;,&quot;settings&quot;:{&quot;name&quot;:&quot;pum-20388&quot;,&quot;time&quot;:&quot;2 years&quot;,&quot;path&quot;:true}}],&quot;triggers&quot;:[{&quot;type&quot;:&quot;auto_open&quot;,&quot;settings&quot;:{&quot;cookie_name&quot;:[&quot;pum-20388&quot;],&quot;delay&quot;:&quot;30000&quot;}},{&quot;type&quot;:&quot;click_open&quot;,&quot;settings&quot;:{&quot;extra_selectors&quot;:&quot;&quot;,&quot;cookie_name&quot;:null}}],&quot;mobile_disabled&quot;:null,&quot;tablet_disabled&quot;:null,&quot;meta&quot;:{&quot;display&quot;:{&quot;stackable&quot;:false,&quot;overlay_disabled&quot;:false,&quot;scrollable_content&quot;:false,&quot;disable_reposition&quot;:false,&quot;size&quot;:&quot;medium&quot;,&quot;responsive_min_width&quot;:&quot;60%&quot;,&quot;responsive_min_width_unit&quot;:false,&quot;responsive_max_width&quot;:&quot;80%&quot;,&quot;responsive_max_width_unit&quot;:false,&quot;custom_width&quot;:&quot;640px&quot;,&quot;custom_width_unit&quot;:false,&quot;custom_height&quot;:&quot;380px&quot;,&quot;custom_height_unit&quot;:false,&quot;custom_height_auto&quot;:false,&quot;location&quot;:&quot;center&quot;,&quot;position_from_trigger&quot;:false,&quot;position_top&quot;:&quot;20&quot;,&quot;position_left&quot;:&quot;0&quot;,&quot;position_bottom&quot;:&quot;0&quot;,&quot;position_right&quot;:&quot;0&quot;,&quot;position_fixed&quot;:false,&quot;animation_type&quot;:&quot;fade&quot;,&quot;animation_speed&quot;:&quot;350&quot;,&quot;animation_origin&quot;:&quot;center top&quot;,&quot;overlay_zindex&quot;:false,&quot;zindex&quot;:&quot;1999999999&quot;},&quot;close&quot;:{&quot;text&quot;:&quot;&quot;,&quot;button_delay&quot;:&quot;1000&quot;,&quot;overlay_click&quot;:false,&quot;esc_press&quot;:false,&quot;f4_press&quot;:false},&quot;click_open&quot;:[]}}" role="dialog" aria-hidden="true" >
+
+	<div id="popmake-20388" class="pum-container popmake theme-20380 pum-responsive pum-responsive-medium responsive size-medium">
+
+				
+
+				
+
+		
+
+				<div class="pum-content popmake-content" tabindex="0">
+			<p><img class="alignnone wp-image-20390 size-large" src="https://computerhistory.org/wp-content/uploads/2021/02/chm_yt_header_2560x1440-e1613084298885-1024x235.jpg" alt="" width="100%" height="235" srcset="https://computerhistory.org/wp-content/uploads/2021/02/chm_yt_header_2560x1440-e1613084298885-1024x235.jpg 1024w, https://computerhistory.org/wp-content/uploads/2021/02/chm_yt_header_2560x1440-e1613084298885-300x69.jpg 300w, https://computerhistory.org/wp-content/uploads/2021/02/chm_yt_header_2560x1440-e1613084298885-768x176.jpg 768w, https://computerhistory.org/wp-content/uploads/2021/02/chm_yt_header_2560x1440-e1613084298885-1440x331.jpg 1440w" sizes="(max-width: 1024px) 100vw, 1024px" /></p>
+<p><iframe src="https://go.computerhistory.org/l/827063/2020-06-08/g76p" width="100%" height="520px"></iframe></p>
+<p><script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script></p>
+		</div>
+
+
+				
+
+				            <button type="button" class="pum-close popmake-close" aria-label="Close">
+			&times;            </button>
+		
+	</div>
+
+</div>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wpcf7 = {"apiSettings":{"root":"https:\/\/computerhistory.org\/wp-json\/contact-form-7\/v1","namespace":"contact-form-7\/v1"}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://computerhistory.org/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=5.1.6'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var countVars = {"disqusShortname":"chm-website"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://computerhistory.org/wp-content/plugins/disqus-comment-system/public/js/comment_count.js?ver=3.0.22'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?render=6LfnkrgUAAAAAPljOHSg2nA0zdlucZVa3Djl8C2x&#038;ver=3.0'></script>
+<script type='text/javascript' src='https://computerhistory.org/wp-includes/js/jquery/ui/core.min.js?ver=1.11.4'></script>
+<script type='text/javascript' src='https://computerhistory.org/wp-includes/js/jquery/ui/position.min.js?ver=1.11.4'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var pum_vars = {"version":"1.16.4","pm_dir_url":"https:\/\/computerhistory.org\/wp-content\/plugins\/popup-maker\/","ajaxurl":"https:\/\/computerhistory.org\/wp-admin\/admin-ajax.php","restapi":"https:\/\/computerhistory.org\/wp-json\/pum\/v1","rest_nonce":null,"default_theme":"20379","debug_mode":"","disable_tracking":"","home_url":"\/","message_position":"top","core_sub_forms_enabled":"1","popups":[],"analytics_route":"analytics","analytics_api":"https:\/\/computerhistory.org\/wp-json\/pum\/v1"};
+var pum_sub_vars = {"ajaxurl":"https:\/\/computerhistory.org\/wp-admin\/admin-ajax.php","message_position":"top"};
+var pum_popups = {"pum-20388":{"triggers":[{"type":"auto_open","settings":{"cookie_name":["pum-20388"],"delay":"30000"}}],"cookies":[{"event":"on_popup_close","settings":{"name":"pum-20388","key":"","session":false,"path":"1","time":"1 month"}},{"event":"pum_sub_form_success","settings":{"name":"pum-20388","time":"2 years","path":true}},{"event":"pum_sub_form_already_subscribed","settings":{"name":"pum-20388","time":"2 years","path":true}}],"disable_on_mobile":false,"disable_on_tablet":false,"atc_promotion":null,"explain":null,"type_section":null,"theme_id":"20380","size":"medium","responsive_min_width":"60%","responsive_max_width":"80%","custom_width":"640px","custom_height_auto":false,"custom_height":"380px","scrollable_content":false,"animation_type":"fade","animation_speed":"350","animation_origin":"center top","open_sound":"none","custom_sound":"","location":"center","position_top":"20","position_bottom":"0","position_left":"0","position_right":"0","position_from_trigger":false,"position_fixed":false,"overlay_disabled":false,"stackable":false,"disable_reposition":false,"zindex":"1999999999","close_button_delay":"1000","fi_promotion":null,"close_on_form_submission":true,"close_on_form_submission_delay":"5000","close_on_overlay_click":false,"close_on_esc_press":false,"close_on_f4_press":false,"disable_form_reopen":false,"disable_accessibility":false,"theme_slug":"lightbox","id":20388,"slug":"email-subscription"}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://computerhistory.org/wp-content/plugins/popup-maker/assets/js/site.min.js?defer&#038;ver=1.16.4'></script>
+<script type='text/javascript' src='https://computerhistory.org/wp-content/themes/bsdstarter/assets/js/source.dev.js?ver=0.0.3'></script>
+<script type='text/javascript' src='https://computerhistory.org/wp-includes/js/wp-embed.min.js?ver=5.2.3'></script>
+<script type="text/javascript">
+( function( grecaptcha, sitekey, actions ) {
+
+	var wpcf7recaptcha = {
+
+		execute: function( action ) {
+			grecaptcha.execute(
+				sitekey,
+				{ action: action }
+			).then( function( token ) {
+				var forms = document.getElementsByTagName( 'form' );
+
+				for ( var i = 0; i < forms.length; i++ ) {
+					var fields = forms[ i ].getElementsByTagName( 'input' );
+
+					for ( var j = 0; j < fields.length; j++ ) {
+						var field = fields[ j ];
+
+						if ( 'g-recaptcha-response' === field.getAttribute( 'name' ) ) {
+							field.setAttribute( 'value', token );
+							break;
+						}
+					}
+				}
+			} );
+		},
+
+		executeOnHomepage: function() {
+			wpcf7recaptcha.execute( actions[ 'homepage' ] );
+		},
+
+		executeOnContactform: function() {
+			wpcf7recaptcha.execute( actions[ 'contactform' ] );
+		},
+
+	};
+
+	grecaptcha.ready(
+		wpcf7recaptcha.executeOnHomepage
+	);
+
+	document.addEventListener( 'change',
+		wpcf7recaptcha.executeOnContactform, false
+	);
+
+	document.addEventListener( 'wpcf7submit',
+		wpcf7recaptcha.executeOnHomepage, false
+	);
+
+} )(
+	grecaptcha,
+	'6LfnkrgUAAAAAPljOHSg2nA0zdlucZVa3Djl8C2x',
+	{"homepage":"homepage","contactform":"contactform"}
+);
+</script>
+
+
+
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"3711322ece","applicationID":"406198101","transactionName":"MlYDZhdTWxJZAERcVwscIFERW1oPFxBZW18QXwBA","queueTime":0,"applicationTime":676,"atts":"HhEAEF9JSBw=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+
+</html>
