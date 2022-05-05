@@ -37,7 +37,7 @@ prefix=${XDG_DATA_HOME:-"$HOME"/.local/share}/wineprefixes
 # download URLs
 urlmanual=http://www.eudora.com/download/
 urlauto=http://www.eudora.com/download/eudora/windows/7.1/Eudora_7.1.0.9.exe
-urlpdf=http://www.eudora.com/download/eudora/windows/7.1/Eudora_71_User_Manual.pdf
+urlpdf=https://web.archive.org/web/20140718091231/http://www.eudora.com/download/eudora/windows/7.1/Eudora_71_User_Manual.pdf
 
 # drive letters to add
 drives=()
